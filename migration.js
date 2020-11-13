@@ -21,6 +21,6 @@ db.serialize(function() {
   db.run('CREATE TABLE IF NOT EXISTS `Folders` ( ' +
            '`id` INTEGER NOT NULL, ' +
            '`name` TEXT NOT NULL, ' +
-           'PRIMARY KEY(`id`), ' );
+           'PRIMARY KEY(`id`)) ' );
 });
 

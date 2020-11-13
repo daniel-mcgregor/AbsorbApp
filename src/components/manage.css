@@ -1,0 +1,22 @@
+#entriesTableDiv {
+    height: 92vh;
+    border: solid 2px black;
+    margin-top: 8vh;
+    position: absolute;
+    right: 4vw;
+    width: 30vw;
+}
+
+#entriesTable {
+    width: 100%;
+}
+
+#scoreCells {
+    width: 20%;
+    border: solid 2px black;
+}
+
+#entryCells {
+    border: solid 2px black;
+
+}

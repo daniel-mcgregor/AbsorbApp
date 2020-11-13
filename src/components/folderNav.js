@@ -1,30 +1,46 @@
 import React from 'react';
 import './folderNav.css';
+import { Link } from 'react-router-dom';
+
+import Absorb from '../util/absorb';
 
 
 class FolderNav extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-
+    
         this.state = {
-            folders: []
-        }
+          folders: []
+        };
+      }
+    
+      componentDidMount() {
+        Absorb.getFolders().then(folders => {
+          if (folders.length){
+            this.setState({folders: folders.map(folder => folder.name)});
+          }
+        });
+      }
 
-        this.renderFolderList = this.renderFolderList.bind(this);
-    }
-
-    renderFolderList(){
-        const numbers = [ "FOLDERS", "Folder1", 2, 3, 4, 5];
-        const listItems = numbers.map((number) =>
-            <li>{number}</li>);
-        return listItems;
-    }
-
+      createFolderList(){
+        const folderItems = this.state.folders.map((folder) =>
+        <Link to={`/#/:${folder}`}><li onclickkey={folder.id}>{folder}</li></Link>);
+        return folderItems;
+      }
+      
     render(){
         return(
             <div className="folderNav">
-                <ul>{this.renderFolderList()}</ul>    
+                <ul>
+                  <li><b>Absorb</b></li>
+                  <li>Manage</li>
+                  <li>Test</li>
+                </ul>
+                <ul>
+                  <li><b>Folders</b></li>
+                  {this.createFolderList()}
+                </ul>    
             </div>
         )
     }

@@ -10,9 +10,16 @@ html, body {
 }
 .content-inside {
   padding-bottom: 50px;
+  
 }
 
 #sideNavs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#manageDiv {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
