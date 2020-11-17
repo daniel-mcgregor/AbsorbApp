@@ -5,8 +5,7 @@
     background-color: rgb(146, 211, 255);
     display: block;
     width: 10%;
-    padding-top: 5vh;
-    
+    padding-top: 5vh;    
 }
 
 .folderNav li {
@@ -16,4 +15,8 @@
 
 ul {
     padding-left: 15px;
+}
+
+#topNav {
+    height: 10vh;
 }

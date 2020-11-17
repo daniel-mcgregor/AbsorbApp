@@ -17,8 +17,6 @@ class App extends Component {
           <div className="content-inside">
             <div id="sideNavs">
               <Route exact path="/" component={FolderNav} />
-              <Route exact path="/" component={Manage} />
-              <Manage />
             </div>
           </div>
         </div>

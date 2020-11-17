@@ -1,10 +1,11 @@
 #entriesTableDiv {
     height: 92vh;
     border: solid 2px black;
-    margin-top: 8vh;
+    margin-top: 4vh;
     position: absolute;
     right: 4vw;
     width: 30vw;
+    top: 0vh;
 }
 
 #entriesTable {

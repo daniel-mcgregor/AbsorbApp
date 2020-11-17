@@ -1,5 +1,6 @@
 import React from 'react';
 import './manage.css';
+import FolderNav from '../components/folderNav';
 import { Link } from 'react-router-dom';
 
 import Absorb from '../util/absorb';
@@ -16,7 +17,8 @@ class Manage extends React.Component {
       }
 
     componentDidMount() {
-        Absorb.getFolder(this.props.match.params.id).then(folder => {
+
+        Absorb.getFolders().then(folder => {
           if (folder.length){
             this.setState({
                 folder: folder,
@@ -25,16 +27,19 @@ class Manage extends React.Component {
           }
         });
 
-        Absorb.getFolderItems(this.props.match.params.id).then(folderItems => {
+        Absorb.getAllFolderItems().then(folderItems => {
+
+            if (folderItems.length){
             this.setState({
                 folderItems: folderItems,
                 savedFolderItems: JSON.parse(JSON.stringify(folderItems))
             });
+          }
         });
       }
 
     renderFolderItems(){
-        const folderItems = this.state.folderItems.map(folderItem, folderItemIndex => {
+        const folderItems = this.state.folderItems.map((folderItem, folderItemIndex) => {
         <article className="row" key={folderItemIndex}>
             <div className="item"><p>{folderItem.entry}</p></div>
             <div className="item"><p>{folderItem.score}</p></div>

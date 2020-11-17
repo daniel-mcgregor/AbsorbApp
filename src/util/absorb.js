@@ -10,7 +10,6 @@ Absorb.getFolders = () => {
   
     return fetch(url).then(response => {
       if (!response.ok) {
-
         return new Promise(resolve => resolve([]));
       }
       return response.json().then(jsonResponse => {
@@ -19,16 +18,15 @@ Absorb.getFolders = () => {
   });
 };
 
-Absorb.getEntries = folderName => {
-  const url = `${baseUrl}/folderItems/${folderName}`;
+Absorb.getAllFolderItems = () => {
+  const url = `${baseUrl}/folders/folderItems`;
 
   return fetch(url).then(response => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
-      
     }
     return response.json().then(jsonResponse => {
-      return jsonResponse.folderItems;
+      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem))
     })
   })
 }
