@@ -26,21 +26,20 @@ class Manage extends React.Component {
             });
           }
         });
-      }
-
-      fetchFolderItems(){
-        Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
-            if (folderItems.length){
-            this.setState({
-                folderItems: folderItems,
-                savedFolderItems: JSON.parse(JSON.stringify(folderItems))
+    }
+    componentDidUpdate(){
+            Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
+                if (folderItems.length){
+                this.setState({
+                    folderItems: folderItems,
+                    savedFolderItems: JSON.parse(JSON.stringify(folderItems))
+                });
+              }
             });
           }
-        });
-      }
 
     renderFolderItems(){
-        {this.fetchFolderItems()}
+
     const folderItems = this.state.folderItems.map((folderItem) =>
     <li key={folderItem.id}>
         <table className="manageTable">
@@ -52,6 +51,7 @@ class Manage extends React.Component {
             </thead>
         </table>
     </li>);
+
     return folderItems;
         
     }

@@ -1,4 +1,4 @@
-const e = require('cors');
+
 const express = require('express');
 const foldersRouter = express.Router();
 
@@ -8,7 +8,7 @@ const db = new sqlite3.Database('./database.sqlite');
 const folderItemsRouter = require('./folderItems.js');
 
 foldersRouter.param('folderName', (req, res, next, folderName) => {
-    const sql = "SELECT * FROM Folders WHERE Folders.name = '$folderName'";
+    const sql = "SELECT * FROM Folders WHERE Folders.name = $folderName";
     const values = {$folderName: folderName};
     db.get(sql, values, (error, folder) => {
         if(error) {

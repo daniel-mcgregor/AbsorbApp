@@ -3,7 +3,6 @@ import './folderNav.css';
 import { Link } from 'react-router-dom';
 import Manage from '../components/manage';
 import Absorb from '../util/absorb';
-import e from 'cors';
 
 
 class FolderNav extends React.Component {
@@ -33,9 +32,9 @@ class FolderNav extends React.Component {
       }
       
       createFolderList(){
-        const folderItems = this.state.folders.map((folder) =>
+        const folders = this.state.folders.map((folder) =>
         <li onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li>);
-        return folderItems;
+        return folders;
       }
 
    
