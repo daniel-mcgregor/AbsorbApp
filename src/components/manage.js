@@ -26,9 +26,10 @@ class Manage extends React.Component {
             });
           }
         });
+      }
 
-        Absorb.getAllFolderItems().then(folderItems => {
-
+      fetchFolderItems(){
+        Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
             if (folderItems.length){
             this.setState({
                 folderItems: folderItems,
@@ -39,29 +40,35 @@ class Manage extends React.Component {
       }
 
     renderFolderItems(){
-        const folderItems = this.state.folderItems.map((folderItem, folderItemIndex) => {
-        <article className="row" key={folderItemIndex}>
-            <div className="item"><p>{folderItem.entry}</p></div>
-            <div className="item"><p>{folderItem.score}</p></div>
-        </article>
-         })
-
-        return (
-            <div className="folderItemsContainer">
-                <div className="rowHeader">
-                    <div className="item">Entry</div>
-                    <div className="item">Score</div>
-                </div>
-                {folderItems}
-            </div>
-        );
+        {this.fetchFolderItems()}
+    const folderItems = this.state.folderItems.map((folderItem) =>
+    <li key={folderItem.id}>
+        <table className="manageTable">
+            <thead>
+            <tr>
+            <th className="entry">{folderItem.entry}</th>
+            <th className="score">{folderItem.score}</th>
+            </tr>
+            </thead>
+        </table>
+    </li>);
+    return folderItems;
+        
     }
 
 
     render(){
         return(
             <div id="entriesTableDiv">
-                {this.renderFolderItems()}
+                <table className="manageTable">
+                    <thead>
+                    <tr>
+                    <th  className="entry">Entry</th>
+                    <th  className="score">Score</th>
+                    </tr>
+                    </thead>
+                </table>
+                <ul>{this.renderFolderItems()}</ul>
             </div>
         )
     }

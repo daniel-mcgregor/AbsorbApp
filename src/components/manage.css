@@ -21,3 +21,16 @@
     border: solid 2px black;
 
 }
+
+.entry{
+    width: 80%;
+}
+
+.score{
+    width: 20%;
+    text-align: center;
+}
+
+.manageTable{
+    width: 100%;
+}

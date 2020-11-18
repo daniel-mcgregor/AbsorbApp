@@ -7,7 +7,8 @@ const db = new sqlite3.Database('./database.sqlite');
 
 
  folderItemsRouter.get('/', (req, res, next) => {
-    const sql = 'SELECT * FROM Entries';
+    const sql = "SELECT * FROM Entries WHERE Entries.folder = '$folderName'";
+    const values = {$folderName: req.params.folderName}
     db.all(sql, values, (error, folderItems) => {
       if (error) {
         next(error);

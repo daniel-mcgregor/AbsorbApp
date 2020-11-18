@@ -2,8 +2,6 @@
 import FolderNav from '../components/folderNav';
 import Footer from '../components/footer';
 import './App.css';
-import Manage from '../components/manage';
-import Absorb from '../util/absorb';
 import React, { Component } from 'react';
 import { Link, HashRouter as Router, Route, BrowserRouter } from 'react-router-dom';
 

@@ -2,6 +2,7 @@ const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('./database.sqlite');
 
 db.serialize(function() {
+  db.run('DROP TABLE IF EXISTS Entries');
   db.run('CREATE TABLE IF NOT EXISTS `Entries` ( ' +
            '`id` INTEGER NOT NULL, ' +
            '`folder` TEXT NOT NULL, ' +
@@ -16,7 +17,9 @@ db.serialize(function() {
            '`key4` TEXT, ' +
            '`key5` TEXT, ' +
            '`key6` TEXT, ' +
-           'PRIMARY KEY(`id`) )');
+           'PRIMARY KEY(`id`)) ');
+
+  db.run('DROP TABLE IF EXISTS Folders');
 
   db.run('CREATE TABLE IF NOT EXISTS `Folders` ( ' +
            '`id` INTEGER NOT NULL, ' +

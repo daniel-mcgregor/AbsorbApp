@@ -18,6 +18,19 @@ Absorb.getFolders = () => {
   });
 };
 
+Absorb.getFolderItemsByFolderName = folderName => {
+  const url = `${baseUrl}/folders/${folderName}/folder-items`;
+
+  return fetch(url).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve([]));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem));
+    })
+  })
+}
+
 Absorb.getAllFolderItems = () => {
   const url = `${baseUrl}/folders/folderItems`;
 
@@ -26,7 +39,7 @@ Absorb.getAllFolderItems = () => {
       return new Promise(resolve => resolve([]));
     }
     return response.json().then(jsonResponse => {
-      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem))
+      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem));
     })
   })
 }

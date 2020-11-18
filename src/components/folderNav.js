@@ -34,7 +34,7 @@ class FolderNav extends React.Component {
       
       createFolderList(){
         const folderItems = this.state.folders.map((folder) =>
-        <Link to={`/`}><li onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li></Link>);
+        <li onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li>);
         return folderItems;
       }
 
