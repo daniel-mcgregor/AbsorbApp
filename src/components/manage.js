@@ -59,16 +59,24 @@ class Manage extends React.Component {
 
     render(){
         return(
-            <div id="entriesTableDiv">
-                <table className="manageTable">
-                    <thead>
-                    <tr>
-                    <th  className="entry">Entry</th>
-                    <th  className="score">Score</th>
-                    </tr>
-                    </thead>
-                </table>
-                <ul>{this.renderFolderItems()}</ul>
+            <div id="manageDiv">
+                <form id="newEntryform">
+                <input id="entry1" type="text" placeholder="New Entry"></input>
+                <textarea id="def1" type="text" placeholder="Definitions/Anwsers"></textarea>
+                <textarea id="key1" type="text" placeholder="Keywords"></textarea>
+                <button id="saveButton" type="submit">Save Entry</button>
+                </form>
+                <div id="entriesTableDiv">
+                    <table className="manageTable">
+                        <thead>
+                        <tr>
+                        <th  className="entry">Entry</th>
+                        <th  className="score">Score</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <ul>{this.renderFolderItems()}</ul>
+                </div>
             </div>
         )
     }

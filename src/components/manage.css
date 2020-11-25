@@ -1,11 +1,13 @@
 #entriesTableDiv {
-    height: 92vh;
-    border: solid 2px black;
+    height: 91.5vh;
     margin-top: 4vh;
     position: absolute;
-    right: 4vw;
+    right: 2vw;
     width: 30vw;
     top: 0vh;
+    background-color: white;
+    border-radius: 3px;
+    font-size: 0.9em;
 }
 
 #entriesTable {
@@ -19,16 +21,86 @@
 
 #entryCells {
     border: solid 2px black;
-
 }
+
+textarea {
+    resize: none;
+    font-family: 'Helvetica', Arial, Lucida Grande, sans-serif;
+  }
+
+#saveButton {
+    border: none;
+    width: 6vw;
+    position: absolute;
+    left: 59.1vw;
+    overflow: hidden;
+    height: 4vh;
+    top: 91.55vh;
+    border-radius: 3px;
+    background-color:rgb(199, 233, 255);
+}
+
+#saveButton:hover {
+    background-color: rgb(182, 226, 255);
+}
+
+#saveButton:active{
+    background-color: rgb(146, 211, 255);
+}
+
+#saveButton:focus{
+    outline: none !important;
+}
+
+#entry1 {
+    height: 3vh;
+    border: none;
+    margin-top: 4vh;
+    position: absolute;
+    left: 12vw;
+    width: 52.5vw;
+    top: 0vh;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#def1:focus, #entry1:focus, #key1:focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+#def1 {
+    height: 60vh;
+    border: none;
+    position: absolute;
+    left: 12vw;
+    width: 52.5vw;
+    top: 10vh;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#key1 {
+    padding: 5px;
+    height: 14.5vh;
+    border: none;
+    position: absolute;
+    left: 12vw;
+    width: 52.5vw;
+    top: 73.5vh;
+    border-radius: 3px;
+}
+
 
 .entry{
     width: 80%;
+    font-weight: 400;
 }
 
 .score{
     width: 20%;
     text-align: center;
+    font-weight: 400;
 }
 
 .manageTable{

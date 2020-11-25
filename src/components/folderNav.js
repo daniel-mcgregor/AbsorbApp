@@ -28,12 +28,11 @@ class FolderNav extends React.Component {
 
       loadFolder(folderId){
         this.setState({loadedFolder: folderId});
-        alert(folderId)
       }
       
       createFolderList(){
         const folders = this.state.folders.map((folder) =>
-        <li onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li>);
+        <li class="folderNavItem" onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li>);
         return folders;
       }
 
@@ -42,13 +41,13 @@ class FolderNav extends React.Component {
     render(){
         return(
             <div className="folderNav">
+              <h3 id="appTitle">Absorb</h3>
                 <ul id="topNav">
-                  <li><b>Absorb</b></li>
-                  <li>Manage</li>
-                  <li>Test</li>
+                  <li class="folderNavItem">Manage</li>
+                  <li class="folderNavItem">Test</li>
                 </ul>
+                <h4 id="folderTitle">Folders</h4>
                 <ul id="folderList">
-                  <li><b>Folders</b></li>
                   {this.createFolderList()}
                 </ul>
                 <Manage loadedFolder={this.state.loadedFolder}/>    
