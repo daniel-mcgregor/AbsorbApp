@@ -97,6 +97,16 @@ textarea {
     font-weight: 400;
 }
 
+.entryItem{
+    width: 80%;
+    font-weight: 400;
+}
+
+.entryItem:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .score{
     width: 20%;
     text-align: center;

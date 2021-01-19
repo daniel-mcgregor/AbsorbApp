@@ -8,6 +8,7 @@ const db = new sqlite3.Database('./database.sqlite');
 const folderItemsRouter = require('./folderItems.js');
 
 foldersRouter.param('folderName', (req, res, next, folderName) => {
+    
     const sql = "SELECT * FROM Folders WHERE Folders.name = $folderName";
     const values = {$folderName: folderName};
     db.get(sql, values, (error, folder) => {
@@ -22,7 +23,9 @@ foldersRouter.param('folderName', (req, res, next, folderName) => {
     });
   });
 
-foldersRouter.use('/:folderName/folder-items', folderItemsRouter)
+  
+foldersRouter.use('/:folderName/folder-items', folderItemsRouter);
+foldersRouter.use('/:folderName/folder-items/:selected', folderItemsRouter);
 
 
 

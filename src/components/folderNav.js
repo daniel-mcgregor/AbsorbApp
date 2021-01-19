@@ -12,7 +12,8 @@ class FolderNav extends React.Component {
     
         this.state = {
           folders: [],
-          loadedFolder: null
+          loadedFolder: null,
+          folderOpen: "closed"
         };
 
         this.createFolderList = this.createFolderList.bind(this);
@@ -28,11 +29,17 @@ class FolderNav extends React.Component {
 
       loadFolder(folderId){
         this.setState({loadedFolder: folderId});
+
+        if (this.state.folderOpen == "closed"){
+        this.setState({folderOpen: "open"});
+        } else {
+          this.setState({folderOpen: "closed"});
+        }
       }
       
       createFolderList(){
         const folders = this.state.folders.map((folder) =>
-        <li class="folderNavItem" onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li>);
+        <li className="folderNavItem" onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}</li>);
         return folders;
       }
 
@@ -43,14 +50,14 @@ class FolderNav extends React.Component {
             <div className="folderNav">
               <h3 id="appTitle">Absorb</h3>
                 <ul id="topNav">
-                  <li class="folderNavItem">Manage</li>
-                  <li class="folderNavItem">Test</li>
+                  <li className="folderNavItem">Manage</li>
+                  <li className="folderNavItem">Test</li>
                 </ul>
                 <h4 id="folderTitle">Folders</h4>
                 <ul id="folderList">
                   {this.createFolderList()}
                 </ul>
-                <Manage loadedFolder={this.state.loadedFolder}/>    
+                <Manage loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/>    
             </div>
         )
     }
