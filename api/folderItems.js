@@ -41,6 +41,7 @@ const db = new sqlite3.Database('./database.sqlite');
     const score = req.body.newEntryItems.score;
     const def1 = req.body.newEntryItems.def1;
     const key1 = req.body.newEntryItems.key1;
+    const id = req.body.newEntryItems.id;
     
     const folderSql = "SELECT * FROM Entries WHERE Entries.folder = $folderName";
     const folderValues = {$folderName: folder};
@@ -53,13 +54,14 @@ const db = new sqlite3.Database('./database.sqlite');
         }  
 
         const sql = "UPDATE Entries SET " + 
-        "def1 = $def1, key1 = $key1 " +
-        "WHERE Entries.entry = $entry AND Entries.folder = $folder";
+        "entry = $entry, def1 = $def1, key1 = $key1 " +
+        "WHERE Entries.id = $id AND Entries.folder = $folder";
         const values = {
-          $entry: entry,
+          $id: id,
           $def1: def1,
           $key1: key1,
-          $folder: folder
+          $folder: folder,
+          $entry: entry
         };
 
         db.run(sql, values, function(error) {
@@ -127,6 +129,27 @@ const db = new sqlite3.Database('./database.sqlite');
         });
       }
     });
+  });
+
+  folderItemsRouter.delete('/:id', (req, res, next) => {
+    const sql = 'DELETE FROM Entries WHERE Entries.id = $id';
+    const values = {$id: req.params.id};
+  
+    db.run(sql, values, function(error) {
+          if (error) {
+            next(error);
+          } else {
+            const sql2 = "SELECT * FROM Entries WHERE Entries.folder = $folderName";
+            const values2 = {$folderName: req.params.folderName}
+            db.all(sql2, values2, (error, folderItems) => {
+              if (error) {
+                next(error);
+              } else {
+                res.status(200).json({folderItems: folderItems});
+              }
+            });
+          }
+        });
   });
 
 

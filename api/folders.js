@@ -26,11 +26,49 @@ foldersRouter.param('folderName', (req, res, next, folderName) => {
   
 foldersRouter.use('/:folderName/folder-items', folderItemsRouter);
 foldersRouter.use('/:folderName/folder-items/:selected', folderItemsRouter);
+foldersRouter.use('/:folderName/folder-items/:id', folderItemsRouter);
 
 
 
 foldersRouter.get('/', (req, res, next) => {
     db.all('SELECT * FROM Folders', (error, folders) => {
+        if (error){
+            next(error);
+        }else{
+            res.status(200).json({folders: folders});
+        }
+    });
+});
+
+foldersRouter.post('/', (req, res, next) => {
+    const sql = 'INSERT INTO Folders (name) VALUES ($name)';
+    const values = {
+        $name: req.body.folderName
+    };
+    db.all(sql, values, (error, folders) => {
+        if (error){
+            next(error);
+        }else{
+            res.status(200).json({folders: folders});
+        }
+    });
+});
+
+foldersRouter.delete('/:folderName', (req, res, next) => {
+
+    const sql0 = 'DELETE FROM Entries WHERE Entries.folder = $name';
+    const values0 = {$name: req.params.folderName};
+  
+    db.all(sql0, values0, (error) => {
+        if (error){
+            next(error);
+        }
+    });
+
+    const sql = 'DELETE FROM Folders WHERE Folders.name = $name';
+    const values = {$name: req.params.folderName};
+  
+    db.all(sql, values, (error, folders) => {
         if (error){
             next(error);
         }else{

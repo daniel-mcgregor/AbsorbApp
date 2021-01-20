@@ -1,9 +1,9 @@
 #entriesTableDiv {
-    height: 91.5vh;
-    margin-top: 4vh;
+    height: 85.5vh;
+    margin-top: 10vh;
     position: absolute;
     right: 2vw;
-    width: 30vw;
+    width: 31vw;
     top: 0vh;
     background-color: white;
     border-radius: 3px;
@@ -12,6 +12,33 @@
 
 #entriesTable {
     width: 100%;
+}
+
+#fourhundred {
+    font-weight: 400;
+}
+
+#currentFolder {
+    height: 4.38vh;
+    margin-top: 4vh;
+    position: absolute;
+    right: 2vw;
+    width: 31vw;
+    top: 0vh;
+    background-color: white;
+    border-radius: 3px;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#blue {
+    color:rgb(146, 211, 255);
+}
+
+#currentFolder h4{
+    font-weight: 500;
 }
 
 #scoreCells {
@@ -38,14 +65,51 @@ textarea {
     top: 91.55vh;
     border-radius: 3px;
     background-color:rgb(199, 233, 255);
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: pointer;
+    outline: none;
 }
 
-#saveButton:hover {
+#deleteButton {
+    border: none;
+    width: 6vw;
+    position: absolute;
+    left: 52vw;
+    overflow: hidden;
+    height: 4vh;
+    top: 91.55vh;
+    border-radius: 3px;
+    background-color:rgb(199, 233, 255);
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: pointer;
+    outline: none;
+}
+
+
+#cancelButton {
+    border: none;
+    width: 6vw;
+    position: absolute;
+    left: 44.9vw;
+    overflow: hidden;
+    height: 4vh;
+    top: 91.55vh;
+    border-radius: 3px;
+    background-color:rgb(199, 233, 255);
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#saveButton:hover, #deleteButton:hover, #cancelButton:hover{
     background-color: rgb(182, 226, 255);
 }
 
-#saveButton:active{
-    background-color: rgb(146, 211, 255);
+#saveButton:active, #deleteButton:active, #cancelButton:active{
+    transform: scale(0.95);
 }
 
 #saveButton:focus{
@@ -57,8 +121,8 @@ textarea {
     border: none;
     margin-top: 4vh;
     position: absolute;
-    left: 12vw;
-    width: 52.5vw;
+    left: 17.2vw;
+    width: 48vw;
     top: 0vh;
     border-radius: 3px;
     padding: 5px;
@@ -73,8 +137,8 @@ textarea {
     height: 60vh;
     border: none;
     position: absolute;
-    left: 12vw;
-    width: 52.5vw;
+    left: 17.2vw;
+    width: 48vw;
     top: 10vh;
     border-radius: 3px;
     padding: 5px;
@@ -85,8 +149,8 @@ textarea {
     height: 14.5vh;
     border: none;
     position: absolute;
-    left: 12vw;
-    width: 52.5vw;
+    left: 17.2vw;
+    width: 48vw;
     top: 73.5vh;
     border-radius: 3px;
 }

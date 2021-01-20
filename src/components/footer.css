@@ -1,7 +1,19 @@
 #footer {
     width: 100%;
-    background-color: rgb(201, 208, 216);
+    background-color: rgb(241, 241, 241);
     height: 50px;
     margin-top: -50px;
-      
+    z-index: 10;
+    display: none;
+}
+
+#blueFoot{
+    position: relative;
+    display: none;
+    background-color: rgb(146, 211, 255);
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 15%;
 }

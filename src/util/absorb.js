@@ -18,6 +18,25 @@ Absorb.getFolders = () => {
   });
 };
 
+Absorb.createFolder = folderName => {
+  const url = `${baseUrl}/folders`;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({folderName: folderName})
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve([]));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.folders.map(folder => camelcaseKeys(folder));
+    });
+});
+};
+
 Absorb.getFolderItemsByFolderName = folderName => {
   const url = `${baseUrl}/folders/${folderName}/folder-items`;
 
@@ -39,7 +58,7 @@ Absorb.getFolderItemsContent = (folderName, selected) => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
     }
-    return response.json();
+    return response.json()
   })
 }
 
@@ -98,6 +117,36 @@ Absorb.updateEntry = (folderName, newEntryItems) => {
   });
 };
 
+
+Absorb.deleteEntry = (folderName, id) => {
+  const url = `${baseUrl}/folders/${folderName}/folder-items/${id}`;
+  const fetchOptions = {
+    method: 'DELETE'
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve(null));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem));
+    });
+  });
+};
+
+Absorb.deleteFolder = (folderName) => {
+  const url = `${baseUrl}/folders/${folderName}`;
+  const fetchOptions = {
+    method: 'DELETE'
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve([]));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.folders.map(folder => camelcaseKeys(folder));
+    });
+});
+};
 
 
 export default Absorb;
