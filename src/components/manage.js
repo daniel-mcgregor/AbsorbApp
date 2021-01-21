@@ -24,7 +24,10 @@ class Manage extends React.Component {
             },
             folderOpen: "open",
             selected: null,
-            editing: false
+            editing: false,
+            focus: false,
+            defFocus: false,
+            entFocus: false
         };
 
         this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -40,6 +43,7 @@ class Manage extends React.Component {
             });
           }
         });
+
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -265,8 +269,10 @@ class Manage extends React.Component {
         const newEntryItems = JSON.parse(JSON.stringify(this.state.newEntryItems));
         newEntryItems.id = null;
         newEntryItems.entry = null;
+        newEntryItems.key1 = null;
         this.setState({newEntryItems: newEntryItems});
         this.setState({editing: false});
+        this.setState({focus: false})
     
     };
 
@@ -354,14 +360,61 @@ class Manage extends React.Component {
         }
     }
 
+    keyPlaceholder(){
+        if (!this.state.focus && !this.state.newEntryItems.key1) {
+            return <span className="greyedOut">Keywords</span>;
+        } else {
+            return null;
+        }
+    }
+
+    focus(){
+        this.setState({focus: true});
+    }
+
+    blur(){
+        this.setState({focus: false});
+    }
+
+    defFocus(){
+        this.setState({defFocus: true});
+    }
+
+    defBlur(){
+        this.setState({defFocus: false});
+    }
+
+    defPlaceholder(){
+        if (!this.state.defFocus){
+            return "Definitions / Answers";
+        } else {
+            return "";
+        }
+    }
+
+    entFocus(){
+        this.setState({entFocus: true});
+    }
+
+    entBlur(){
+        this.setState({entFocus: false});
+    }
+
+    entPlaceholder(){
+        if (!this.state.entFocus){
+            return "New Entry";
+        } else {
+            return "";
+        }
+    }
 
     render(){
         return(
             <div id="manageDiv">
                 <form id="newEntryform">
-                <input onChange={(e) => this.newEntryEntry(e)} id="entry1" type="text" placeholder="New Entry"></input>
-                <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" type="text" placeholder="Definitions / Answers"></textarea>
-                <div contenteditable="true" onKeyDown={this.handleKeyDown}  id="key1" type="text"></div>
+                <input onChange={(e) => this.newEntryEntry(e)} id="entry1" type="text" onBlur={this.entBlur.bind(this)} onFocus={this.entFocus.bind(this)} placeholder={this.entPlaceholder()}></input>
+                <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" type="text" onBlur={this.defBlur.bind(this)} onFocus={this.defFocus.bind(this)} placeholder={this.defPlaceholder()}></textarea>
+                <div contenteditable="true" onBlur={this.blur.bind(this)} onFocus={this.focus.bind(this)} onKeyDown={this.handleKeyDown}  id="key1" type="text">{this.keyPlaceholder()}</div>
                 <button onClick={this.saveNewEntry.bind(this)} id="saveButton" type="button">Save Entry</button>
                 <button onClick={this.deleteEntry.bind(this)} id="deleteButton" type="button">Delete Entry</button>
                 <button onClick={this.cancelEdit.bind(this)} id="cancelButton" type="button">Cancel Edit</button>

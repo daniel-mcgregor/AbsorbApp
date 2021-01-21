@@ -35,6 +35,24 @@ class FolderNav extends React.Component {
     
       componentDidMount() {
         this.getFolders();
+
+        let location = "";
+        location += window.location;
+
+        if (location.includes("manage")){
+         this.setState({currentPage: {
+           manage: "700",
+           test: "400"
+         }})   
+        }
+
+        if (location.includes("test")){
+          this.setState({currentPage: {
+            manage: "400",
+            test: "700"
+          }})   
+         }
+
       }
 
       componentDidUpdate(prevState) {
