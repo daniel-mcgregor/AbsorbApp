@@ -71,6 +71,14 @@ textarea {
     outline: none;
 }
 
+.keyword {
+    background-color: rgba(199, 233, 255, 0.589);
+    padding: 2px;
+    padding-top: 0px;
+    border-radius: 5px;
+    width: auto;
+}
+
 #deleteButton {
     border: none;
     width: 6vw;
@@ -112,10 +120,6 @@ textarea {
     transform: scale(0.95);
 }
 
-#saveButton:focus{
-    outline: none !important;
-}
-
 #entry1 {
     height: 3vh;
     border: none;
@@ -142,6 +146,9 @@ textarea {
     top: 10vh;
     border-radius: 3px;
     padding: 5px;
+    background-color: white;
+    display: block;
+
 }
 
 #key1 {
@@ -153,6 +160,8 @@ textarea {
     width: 48vw;
     top: 73.5vh;
     border-radius: 3px;
+    background-color: white;
+    display: block;
 }
 
 

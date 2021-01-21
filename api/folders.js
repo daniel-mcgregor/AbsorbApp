@@ -27,6 +27,7 @@ foldersRouter.param('folderName', (req, res, next, folderName) => {
 foldersRouter.use('/:folderName/folder-items', folderItemsRouter);
 foldersRouter.use('/:folderName/folder-items/:selected', folderItemsRouter);
 foldersRouter.use('/:folderName/folder-items/:id', folderItemsRouter);
+foldersRouter.use('/:folderName/folder-items/:low/:high', folderItemsRouter);
 
 
 

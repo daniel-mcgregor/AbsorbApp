@@ -26,6 +26,8 @@ class Manage extends React.Component {
             selected: null,
             editing: false
         };
+
+        this.handleKeyDown = this.handleKeyDown.bind(this);
       }
 
     componentDidMount() {
@@ -42,7 +44,11 @@ class Manage extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
 
-        if (this.state.newEntryItems.id != prevState.newEntryItems.id){
+        if (this.props.category !== prevProps.category) {
+            this.fetchFolderItems();
+        }
+
+        if (this.state.newEntryItems.id !== prevState.newEntryItems.id){
             
             if (this.state.newEntryItems.id) {
                 document.getElementById("deleteButton").style.opacity = "1";
@@ -55,7 +61,7 @@ class Manage extends React.Component {
 
         }
 
-        if (this.state.newEntryItems.entry != prevState.newEntryItems.entry) {
+        if (this.state.newEntryItems.entry !== prevState.newEntryItems.entry) {
 
             if (this.state.newEntryItems.entry) {
                 document.getElementById("saveButton").style.opacity = "1";
@@ -66,7 +72,7 @@ class Manage extends React.Component {
             }
         }
 
-        if (this.state.editing != prevState.editing) {
+        if (this.state.editing !== prevState.editing) {
             if (this.state.editing) {
                 document.getElementById("cancelButton").style.opacity = "1";
                 document.getElementById("cancelButton").style.pointerEvents = "all";
@@ -77,13 +83,13 @@ class Manage extends React.Component {
         }
   
 
-        if (this.props.folderOpen == this.state.folderOpen){
+        if (this.props.folderOpen === this.state.folderOpen){
 
             this.fetchFolderItems();
 
         // the following if..else is used to prevent an infinite loop where the request for folder-items would continue indefintely.
 
-            if (this.state.folderOpen == "open") {
+            if (this.state.folderOpen === "open") {
                 this.setState({folderOpen: "closed"});
             } else {
                 this.setState({folderOpen: "open"});
@@ -104,16 +110,66 @@ class Manage extends React.Component {
     this.setState({newEntryItems: newEntryItems});
     }
 
-    newEntryKeyword(event) {
+    newEntryKeyword(keywords) {
     const newEntryItems = JSON.parse(JSON.stringify(this.state.newEntryItems));
-    newEntryItems.key1 = event.target.value;
+    newEntryItems.key1 = keywords;
     this.setState({newEntryItems: newEntryItems});
     }
 
+    handleKeyDown(event) {
+        
+        let keywords = document.querySelector("#key1").innerHTML;
+        this.newEntryKeyword(keywords);
 
+        if(event.keyCode === 13) { 
+            event.preventDefault();
+        }
+
+        if(event.keyCode === 32) { 
+            this.seperate();
+            event.preventDefault();
+
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(event.target);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            event.target.focus();
+            range.detach(); // optimization
+      }
+    }
 
     fetchFolderItems(){
-        Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
+
+        let low;
+        let high;
+        
+        if (this.props.category === "All") {
+            Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
+                const newEntryItems = {...this.state.newEntryItems};
+                newEntryItems.folder = this.props.loadedFolder;
+                this.setState({
+                    folderItems: folderItems,
+                    newEntryItems: newEntryItems,
+                    savedFolderItems: JSON.parse(JSON.stringify(folderItems))
+                });
+            });
+
+            return;
+
+        } else if (this.props.category === "Clueless") {
+            low = 0;
+            high = 4;
+        } else if (this.props.category === "Learning") {
+            low = 5
+            high = 9
+        } else {
+            low = 10
+            high = 99999;
+        }
+
+        Absorb.getFolderItemsByCategory(this.props.loadedFolder, low, high).then(folderItems => {
             const newEntryItems = {...this.state.newEntryItems};
             newEntryItems.folder = this.props.loadedFolder;
             this.setState({
@@ -122,6 +178,7 @@ class Manage extends React.Component {
                 savedFolderItems: JSON.parse(JSON.stringify(folderItems))
             });
         });
+        
     }
 
     // send state items to database. TODO: create methods which update state to hold the new entry items.
@@ -131,7 +188,7 @@ class Manage extends React.Component {
 
         document.getElementById("entry1").value = null;
         document.getElementById("def1").value = null;
-        document.getElementById("key1").value = null;
+        document.getElementById("key1").innerHTML = null;
 
         const newEntryItems = JSON.parse(JSON.stringify(this.state.newEntryItems));
         newEntryItems.id = null;
@@ -177,7 +234,7 @@ class Manage extends React.Component {
             } 
         });
 
-        if (exists === false && this.state.editing == false) {
+        if (exists === false && this.state.editing === false) {
                 Absorb.saveEntry(this.props.loadedFolder, this.state.newEntryItems).then(folderItems => {
                     if (folderItems){
                     const newEntryItems = {...this.state.newEntryItems};
@@ -203,7 +260,7 @@ class Manage extends React.Component {
     
         document.getElementById("entry1").value = null;
         document.getElementById("def1").value = null;
-        document.getElementById("key1").value = null;
+        document.getElementById("key1").innerHTML = null;
 
         const newEntryItems = JSON.parse(JSON.stringify(this.state.newEntryItems));
         newEntryItems.id = null;
@@ -237,12 +294,14 @@ class Manage extends React.Component {
 
           document.getElementById("entry1").value = this.state.newEntryItems.entry;
           document.getElementById("def1").value = this.state.newEntryItems.def1;
-          document.getElementById("key1").value = this.state.newEntryItems.key1;
+          document.getElementById("key1").innerHTML = this.state.newEntryItems.key1;
+
+          this.seperate();
 
           this.setState({editing: true});
           
           this.state.folderItems.forEach(item => {
-              if (item.entry == this.state.newEntryItems.entry) {
+              if (item.entry === this.state.newEntryItems.entry) {
                   item.selected = "600";
               } else {
                   item.selected = "400";
@@ -278,14 +337,31 @@ class Manage extends React.Component {
         }
     }
 
+    seperate() {
+            const keywords = document.getElementById("key1").innerHTML;
+
+            if (keywords){
+            const splitKeys = keywords.split("&nbsp;");
+            const keyArray = [];
+            splitKeys.forEach(keyword => { 
+                if (!keyword.includes('contenteditable')){
+                keyArray.push("<span class='keyword' contenteditable='false'>" + keyword + "</span>&nbsp")
+                } else {
+                    keyArray.push(keyword);
+                }
+            });
+            document.getElementById("key1").innerHTML = keyArray.join(" ");
+        }
+    }
+
 
     render(){
         return(
             <div id="manageDiv">
                 <form id="newEntryform">
                 <input onChange={(e) => this.newEntryEntry(e)} id="entry1" type="text" placeholder="New Entry"></input>
-                <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" type="text" placeholder="Definitions / Anwsers"></textarea>
-                <textarea onChange={(e) => this.newEntryKeyword(e)} id="key1" type="text" placeholder="Keywords (optional, separated with commas)"></textarea>
+                <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" type="text" placeholder="Definitions / Answers"></textarea>
+                <div contenteditable="true" onKeyDown={this.handleKeyDown}  id="key1" type="text"></div>
                 <button onClick={this.saveNewEntry.bind(this)} id="saveButton" type="button">Save Entry</button>
                 <button onClick={this.deleteEntry.bind(this)} id="deleteButton" type="button">Delete Entry</button>
                 <button onClick={this.cancelEdit.bind(this)} id="cancelButton" type="button">Cancel Edit</button>

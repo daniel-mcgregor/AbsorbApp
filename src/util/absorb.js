@@ -37,7 +37,8 @@ Absorb.createFolder = folderName => {
 });
 };
 
-Absorb.getFolderItemsByFolderName = folderName => {
+Absorb.getFolderItemsByFolderName = folder => {
+  const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items`;
 
   return fetch(url).then(response => {
@@ -50,15 +51,32 @@ Absorb.getFolderItemsByFolderName = folderName => {
   })
 }
 
+Absorb.getFolderItemsByCategory = (folder, low, high) => {
+  const folderName = encodeURIComponent(folder);
+  const url = `${baseUrl}/folders/${folderName}/folder-items/${low}/${high}`;
+  return fetch(url).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve([]));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem));
+    })
+  })
+}
 
-Absorb.getFolderItemsContent = (folderName, selected) => {
-  const url = `${baseUrl}/folders/${folderName}/folder-items/${selected}`;
+
+Absorb.getFolderItemsContent = (folder, selected) => {
+  
+  const folderName = encodeURIComponent(folder);
+  const select = encodeURIComponent(selected);
+
+  const url = `${baseUrl}/folders/${folderName}/folder-items/${select}`;
 
   return fetch(url).then(response => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
     }
-    return response.json()
+    return response.json();
   })
 }
 
@@ -77,7 +95,9 @@ Absorb.getAllFolderItems = () => {
 }
 
 
-Absorb.saveEntry = (folderName, newEntryItems) => {
+Absorb.saveEntry = (folder, newEntryItems) => {
+
+  const folderName = encodeURIComponent(folder);
 
   const url = `${baseUrl}/folders/${folderName}/folder-items`;
   const fetchOptions = {
@@ -97,8 +117,8 @@ Absorb.saveEntry = (folderName, newEntryItems) => {
   });
 };
 
-Absorb.updateEntry = (folderName, newEntryItems) => {
-
+Absorb.updateEntry = (folder, newEntryItems) => {
+  const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items`;
   const fetchOptions = {
     method: 'PUT',
@@ -118,7 +138,8 @@ Absorb.updateEntry = (folderName, newEntryItems) => {
 };
 
 
-Absorb.deleteEntry = (folderName, id) => {
+Absorb.deleteEntry = (folder, id) => {
+  const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items/${id}`;
   const fetchOptions = {
     method: 'DELETE'
@@ -133,7 +154,8 @@ Absorb.deleteEntry = (folderName, id) => {
   });
 };
 
-Absorb.deleteFolder = (folderName) => {
+Absorb.deleteFolder = (folder) => {
+  const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}`;
   const fetchOptions = {
     method: 'DELETE'

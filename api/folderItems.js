@@ -17,6 +17,22 @@ const db = new sqlite3.Database('./database.sqlite');
     });
   });
 
+  folderItemsRouter.get('/:low/:high', (req, res, next) => {
+    const sql = "SELECT * FROM Entries WHERE Entries.score >= $low AND Entries.score <= $high AND Entries.folder = $folderName";
+    const values = {
+      $folderName: req.params.folderName,
+      $low: req.params.low,
+      $high: req.params.high
+    }
+    db.all(sql, values, (error, folderItems) => {
+      if (error) {
+        next(error);
+      } else {
+        res.status(200).json({folderItems: folderItems});
+      }
+    });
+  });
+
 
   folderItemsRouter.get('/:selected', (req, res, next) => {
     const sql = "SELECT * FROM Entries WHERE Entries.folder = $folderName AND Entries.entry = $selected";

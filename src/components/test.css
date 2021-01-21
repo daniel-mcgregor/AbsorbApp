@@ -1,0 +1,68 @@
+#entryTest {
+    height: 3vh;
+    border: none;
+    margin-top: 4vh;
+    position: absolute;
+    left: 17.2vw;
+    width: 80vw;
+    top: 0vh;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#defTest:focus, #entryTest:focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+#defTest {
+    height: 78vh;
+    border: none;
+    position: absolute;
+    left: 17.2vw;
+    width: 80vw;
+    top: 10vh;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#nextButton {
+    border: none;
+    width: auto;
+    position: absolute;
+    left: 89%;
+    overflow: hidden;
+    height: 4vh;
+    top: 91.55vh;
+    border-radius: 3px;
+    background-color:rgb(199, 233, 255);
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#prevButton {
+    border: none;
+    width: auto;
+    position: absolute;
+    left: 80%;
+    overflow: hidden;
+    height: 4vh;
+    top: 91.55vh;
+    border-radius: 3px;
+    background-color:rgb(199, 233, 255);
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: pointer;
+    outline: none;
+}
+
+
+#nextButton:hover, #prevButton:hover{
+    background-color: rgb(182, 226, 255);
+}
+
+#nextButton:active, #prevButton:active {
+    transform: scale(0.95);
+}

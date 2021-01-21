@@ -1,10 +1,11 @@
 import React from 'react';
 import './folderNav.css';
-import { Link } from 'react-router-dom';
 import Manage from '../components/manage';
+import Test from '../components/test';
 import Absorb from '../util/absorb';
 import pencil from '../images/pencil.png';
 import pencil1 from '../images/pencil1.png';
+import { Link, HashRouter as Router, Route, BrowserRouter } from 'react-router-dom';
 
 
 class FolderNav extends React.Component {
@@ -20,10 +21,11 @@ class FolderNav extends React.Component {
           deleteFolder: null,
           verify: "none",
           currentPage: {
-            manage: "700",
-            test: "300"
+            manage: "400",
+            test: "400"
           },
-          refreshFolderItems: false
+          refreshFolderItems: false,
+          category: "All"
         };
 
         this.createFolderList = this.createFolderList.bind(this);
@@ -81,6 +83,25 @@ class FolderNav extends React.Component {
         }
       }
 
+      currentPage(page) {
+        if (page == "manage") {
+          this.setState({currentPage : {
+            manage: "700",
+            test: "400"
+          }}) 
+        } else if (page =="test"){
+          this.setState({currentPage : {
+            manage: "400",
+            test: "700"
+          }}) 
+        } else{
+          this.setState({currentPage : {
+            manage: "400",
+            test: "400"
+          }}) 
+        }
+      }
+
 
       loadFolder(folder){
         this.setState({loadedFolder: folder});
@@ -92,6 +113,10 @@ class FolderNav extends React.Component {
         }
   
 
+      }
+
+      changeCat(e) {
+        this.setState({category: e.target.value});
       }
       
       createFolderList(){
@@ -125,23 +150,35 @@ class FolderNav extends React.Component {
     
     render(){
         return(
+          <BrowserRouter basename="/" >
             <div className="folderNav">
-              <h3 id="appTitle">Absorb</h3>
+                <Link style={{ textDecoration: 'none', color: "black" }} to="/"><h3 id="appTitle" onClick={this.currentPage.bind(this, "home")}>Absorb</h3></Link>
                 <ul id="topNav">
-                  <li className="folderNavItem" style={{fontWeight: this.state.currentPage.manage}}>Manage</li>
-                  <li className="folderNavItem">Test</li>
+                <Link style={{ textDecoration: 'none', color: "black" }} to="/manage"><li className="pageNavItem" onClick={this.currentPage.bind(this, "manage")} style={{fontWeight: this.state.currentPage.manage}}>Manage</li></Link>
+                <Link style={{ textDecoration: 'none', color: "black" }} to="/test"><li className="pageNavItem" onClick={this.currentPage.bind(this, "test")} style={{fontWeight: this.state.currentPage.test}}>Test</li></Link>
                 </ul>
                 <h4 id="folderTitle">Folders</h4>
                 <ul id="folderList">
                   {this.createFolderList()}
                   <li><input maxlength="20" onChange={(e) => this.nameNewFolder(e)} onKeyDown={this.handleKeyDown} id="newFolder" placeholder="new folder"></input><img id="pencil" src={this.fetchPencil()} width={"10px"}/></li>
                 </ul>
+                <h4 id="catTitle">Category</h4>
+                <div id="categoryDiv">
+                    <select id="categories" onChange={(e) => this.changeCat(e)}>
+                      <option value="All">All</option>
+                      <option value="Clueless">Clueless</option>
+                      <option value="Learning">Learning</option>
+                      <option value="Mastered">Mastered</option>
+                    </select>
+                </div>
                 <div className="verify" style={{display: this.state.verify}}>
                   <h3 className="verifyQuestion">Are you sure you want to <span className="red">permanently delete</span> this folder: {this.state.deleteFolder}?</h3>
                   <button onClick={this.removeFolder.bind(this)} className="answer">Delete</button><button onClick={this.cancel.bind(this)} className="answer">Cancel</button>
                 </div>
-                <Manage refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/>    
+                <Route path="/test" component={Test} />
+                <Route path="/manage" render={props => <Manage category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
             </div>
+            </BrowserRouter>
         )
     }
 }
