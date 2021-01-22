@@ -193,7 +193,7 @@ class FolderNav extends React.Component {
                   <h3 className="verifyQuestion">Are you sure you want to <span className="red">permanently delete</span> this folder: {this.state.deleteFolder}?</h3>
                   <button onClick={this.removeFolder.bind(this)} className="answer">Delete</button><button onClick={this.cancel.bind(this)} className="answer">Cancel</button>
                 </div>
-                <Route path="/test" component={Test} />
+                <Route path="/test" render={props => <Test category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
                 <Route path="/manage" render={props => <Manage category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
             </div>
             </BrowserRouter>

@@ -36,8 +36,6 @@
     top: 91.55vh;
     border-radius: 3px;
     background-color:rgb(199, 233, 255);
-    opacity: 0.6;
-    pointer-events: none;
     cursor: pointer;
     outline: none;
 }
