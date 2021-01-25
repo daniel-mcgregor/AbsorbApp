@@ -146,8 +146,6 @@ textarea {
     top: 10vh;
     border-radius: 3px;
     padding: 5px;
-    background-color: white;
-    display: block;
 
 }
 
@@ -164,9 +162,7 @@ textarea {
     width: 48vw;
     top: 73.5vh;
     border-radius: 3px;
-    background-color: white;
-    display: block;
-    font-size: 0.9em;
+
 }
 
 

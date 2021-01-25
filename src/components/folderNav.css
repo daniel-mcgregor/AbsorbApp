@@ -84,6 +84,7 @@ Link {
     border: none;
     border-radius: 2px;
     outline: none;
+    cursor: pointer;
 }
 
 .answer:hover{

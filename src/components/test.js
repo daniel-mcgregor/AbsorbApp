@@ -16,10 +16,16 @@ class Test extends React.Component {
             folderItems: [],
             folderOpen: "open",
             quiz: null,
-            answered: []
-        };
+            answered: [],
+            correctDefColor: "3px solid rgba(157, 228, 140, 0)",
+            correctEntColor: "3px solid rgba(157, 228, 140, 0)",
+            answerColor: "3px solid rgba(157, 228, 140, 0)",
+            status: "",
+            statusColor: "white"
+        }
 
         this.setupQuiz = this.setupQuiz.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
 
       }
 
@@ -35,8 +41,6 @@ class Test extends React.Component {
         });
 
         this.fetchFolderItems();
-
-       this.setupQuiz();
 
     }
 
@@ -73,7 +77,9 @@ class Test extends React.Component {
                         folderItems: folderItems,
                         newEntryItems: newEntryItems,
                         savedFolderItems: JSON.parse(JSON.stringify(folderItems))
-                    });
+                    },
+                    this.setupQuiz
+                    );
                 });
     
                 return;
@@ -96,10 +102,80 @@ class Test extends React.Component {
                     folderItems: folderItems,
                     newEntryItems: newEntryItems,
                     savedFolderItems: JSON.parse(JSON.stringify(folderItems))
-                });
+                },
+                this.setupQuiz
+                );
             });
             
         }
+
+        handleKeyDown(event) {
+            if(event.keyCode === 13) {
+                event.preventDefault();
+                this.checkAnswer();
+            }
+
+            if (event.keyCode === 39){
+                event.preventDefault();
+                this.newQuizEntry();
+            }
+
+            if (event.keyCode === 37){
+                event.preventDefault();
+                this.newQuizDef();
+            }
+          }
+
+        checkAnswer(){
+            let correct = 0;
+
+            if (this.state.computerInput === "entry"){
+
+
+
+                    this.state.quiz.keys[this.state.answered[this.state.answered.length - 1]].forEach(key => {
+                        if (document.getElementById("defTest").value.toLowerCase().includes(key.toLowerCase())) {
+                            correct += 1;
+                        }
+                    })
+
+                    if (correct === this.state.quiz.keys[this.state.answered[this.state.answered.length - 1]].length) {
+                        this.setState({correctDefColor: "3px solid rgb(0, 204, 0)"});
+                        this.setState({status: "Correct!"});
+                        this.setState({statusColor: "rgb(0, 204, 0)"})
+                    } else if (document.getElementById("defTest").value.toLowerCase() === this.state.quiz.defs[this.state.answered[this.state.answered.length - 1]].toLowerCase() ) {
+                        this.setState({correctDefColor: "3px solid rgb(0, 204, 0)"});
+                        this.setState({status: "Correct!"});
+                        this.setState({statusColor: "rgb(0, 204, 0)"})
+                    } else {
+                        this.setState({correctDefColor: "3px solid red"});
+                        this.setState({status: "Incorrect"});
+                        this.setState({statusColor: "red"})
+                    }
+
+
+                this.setState({answerColor: "3px solid rgb(0, 204, 0)"});
+                document.getElementById("answerBox").value = this.state.quiz.defs[this.state.answered[this.state.answered.length - 1]];
+
+            } else {
+
+             
+
+                    if (document.getElementById("entryTest").value.toLowerCase() === this.state.quiz.entries[this.state.answered[this.state.answered.length - 1]].toLowerCase()){
+                        this.setState({correctEntColor: "3px solid rgb(0, 204, 0)"});
+                        this.setState({status: "Correct"});
+                        this.setState({statusColor: "rgb(0, 204, 0)"})
+                    } else {
+                        this.setState({correctEntColor: "3px solid red"});
+                        this.setState({status: "Incorrect"});
+                        this.setState({statusColor: "red"})
+                    }
+
+
+                this.setState({answerColor: "3px solid rgb(0, 204, 0)"});
+                document.getElementById("answerBox").value = this.state.quiz.entries[this.state.answered[this.state.answered.length - 1]];
+            }
+            }
 
         setupQuiz(){
             const quiz = {
@@ -111,35 +187,51 @@ class Test extends React.Component {
             this.state.folderItems.forEach(item => {
                 quiz.entries.push(item.entry);
                 quiz.defs.push(item.def1);
-                if (quiz.keys != ""){
-                    let newKeys = item.key1.split("> ");
-                    let cleanKeys = [];
-                    newKeys.forEach(key => {
-                    cleanKeys.push(key.replace('<span class="keyword" contenteditable="false">', "").replace('</span', ""));
-                    });
-                    let lastKeys = cleanKeys.splice(cleanKeys.length - 1, 1);
-                    let newLastKeys = lastKeys[0].split(">&nbsp;")
-                    newLastKeys.forEach(key => {
-                        cleanKeys.push(key);
-                    })
-                    quiz.keys.push(cleanKeys);
-                }
+                let newArray = [];
+                item.key1.split(",").forEach(key => {
+                    newArray.push(key.trim());
+                });
+                quiz.keys.push(newArray);
             });
 
             this.setState({quiz: quiz});
         
         }
 
-        newQuiz(){
+        newQuizEntry(){
             
             if (this.state.answered.length != this.state.quiz.entries.length){
                 let randInt = this.randomIntFromInterval(0, this.state.quiz.entries.length - 1);
                 document.getElementById("entryTest").value = this.state.quiz.entries[randInt];
+                document.getElementById("defTest").value = "";
+                document.getElementById("answerBox").value = "";
+                this.setState({status: ""});
                 this.setState({ answered: [...this.state.answered, randInt] });
-            } else {
-                alert("Test complete");
-            }
+                this.setState({computerInput: "entry"});
+                this.setState({correctDefColor: "3px solid rgba(157, 228, 140, 0)"});
+                this.setState({correctEntColor: "3px solid rgba(157, 228, 140, 0)"});
+                this.setState({answerColor: "3px solid rgba(157, 228, 140, 0)"});
+                this.setState({statusColor: "white"});
+                document.getElementById("defTest").focus();
+            } 
 
+        }
+
+        newQuizDef(){
+            if (this.state.answered.length != this.state.quiz.entries.length){
+                let randInt = this.randomIntFromInterval(0, this.state.quiz.entries.length - 1);
+                document.getElementById("defTest").value = this.state.quiz.defs[randInt];
+                document.getElementById("entryTest").value = "";
+                document.getElementById("answerBox").value = "";
+                this.setState({status: ""});
+                this.setState({ answered: [...this.state.answered, randInt] });
+                this.setState({computerInput: "def"});
+                this.setState({correctDefColor: "3px solid rgba(157, 228, 140, 0)"});
+                this.setState({correctEntColor: "3px solid rgba(157, 228, 140, 0)"});
+                this.setState({answerColor: "3px solid rgba(157, 228, 140, 0)"});
+                this.setState({statusColor: "white"});
+                document.getElementById("entryTest").focus();
+            } 
         }
 
         randomIntFromInterval(min, max) { // min and max included 
@@ -152,6 +244,7 @@ class Test extends React.Component {
                 }
             }
 
+
             return int; 
           }
 
@@ -159,12 +252,16 @@ class Test extends React.Component {
     render(){
         return(
             <div id="testDiv">
+                <div id="status" style={{borderColor: this.state.statusColor}}><h3 style={{color: this.state.statusColor}}>{this.state.status}</h3></div>
                 <form id="newEntryform">
-                <input id="entryTest" type="text" placeholder="Press the RIGHT arrow key to fetch a random entry."></input>
-                <textarea  id="defTest" type="text" placeholder="Press the LEFT arrow key to fetch a random definition."></textarea>
-                <button  id="nextButton" type="button" onClick={this.newQuiz.bind(this)}>Random Entry</button>
-                <button  id="prevButton" type="button">Random Definition</button>
+                <input id="entryTest" onKeyDown={this.handleKeyDown} style={{border: this.state.correctEntColor}} type="text" placeholder="Press the RIGHT arrow key to fetch a random entry. Press ENTER to check your answer."></input>
+                <textarea  id="defTest" onKeyDown={this.handleKeyDown} style={{border: this.state.correctDefColor}}type="text" placeholder="Press the LEFT arrow key to fetch a random definition. Press ENTER to check your answer."></textarea>
+                <textarea  id="answerBox" style={{border: this.state.answerColor}} type="text" placeholder="Answers will display here."></textarea>
+                <button  id="nextButton" type="button" onClick={this.newQuizEntry.bind(this)}>Random Entry</button>
+                <button  id="prevButton" type="button" onClick={this.newQuizDef.bind(this)}>Random Definition</button>
+                <button  id="checkButton" type="button" onClick={this.checkAnswer.bind(this)}>Check Answer</button>
                 </form>
+                {document.onkeydown = this.handleKeyDown}
             </div>
         )
     }

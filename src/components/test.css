@@ -4,7 +4,7 @@
     margin-top: 4vh;
     position: absolute;
     left: 17.2vw;
-    width: 80vw;
+    width: 60vw;
     top: 0vh;
     border-radius: 3px;
     padding: 5px;
@@ -15,15 +15,44 @@
     box-shadow: 0 0 10px #719ECE;
 }
 
+#status {
+    height: 4.4%;
+    border: none;
+    position: absolute;
+    left: 79.2vw;
+    width: 18.6vw;
+    top: 4vh;
+    border-radius: 3px;
+    text-align: center;
+    border: solid 3px;
+    background-color: white;
+}
+
+#status h3 {
+    margin: 0px;
+}
+
 #defTest {
-    height: 78vh;
+    height: 76vh;
     border: none;
     position: absolute;
     left: 17.2vw;
-    width: 80vw;
-    top: 10vh;
+    width: 38.9vw;
+    top: 11vh;
     border-radius: 3px;
     padding: 5px;
+}
+
+#answerBox {
+    height: 76vh;
+    border: none;
+    position: absolute;
+    left: 58.3vw;
+    width: 38.9vw;
+    top: 11vh;
+    border-radius: 3px;
+    padding: 5px;
+    pointer-events: none;
 }
 
 #nextButton {
@@ -50,14 +79,26 @@
     top: 91.55vh;
     border-radius: 3px;
     background-color:rgb(199, 233, 255);
-    opacity: 0.6;
-    pointer-events: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#checkButton {
+    border: none;
+    width: auto;
+    position: absolute;
+    left: 72.58%;
+    overflow: hidden;
+    height: 4vh;
+    top: 91.55vh;
+    border-radius: 3px;
+    background-color:rgb(199, 233, 255);
     cursor: pointer;
     outline: none;
 }
 
 
-#nextButton:hover, #prevButton:hover{
+#nextButton:hover, #prevButton:hover, #checkButton:hover{
     background-color: rgb(182, 226, 255);
 }
 

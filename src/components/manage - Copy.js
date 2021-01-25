@@ -118,7 +118,7 @@ class Manage extends React.Component {
 
     newEntryKeyword(event) {
     const newEntryItems = JSON.parse(JSON.stringify(this.state.newEntryItems));
-    newEntryItems.key1 = event.target.value;
+    newEntryItems.key1 = keywords;
     this.setState({newEntryItems: newEntryItems});
     }
 
@@ -325,12 +325,34 @@ class Manage extends React.Component {
         }
     }
 
+    // seperate() {
+    //         const keywords = document.getElementById("key1").innerHTML;
+
+
+    //         if (keywords != ""){
+    //             alert("going for it");
+    //         const splitKeys = keywords.split("&nbsp;");
+    //         const keyArray = [];
+    //         splitKeys.forEach(keyword => { 
+    //             if (!keyword.includes('contenteditable')){
+    //             keyArray.push("<span class='keyword' contenteditable='false'>" + keyword + "</span>&nbsp")
+    //             } else {
+    //                 keyArray.push(keyword);
+    //             }
+    //         });
+            
+    //         document.getElementById("key1").innerHTML = keyArray.join(" ");
+    //     } else {
+    //         document.getElementById("key1").innerHTML = null;
+    //     }
+    // }
+
     render(){
         return(
             <div id="manageDiv">
                 <form id="newEntryform">
-                <input onChange={(e) => this.newEntryEntry(e)} id="entry1" placeholder="New Entry" type="text"></input>
-                <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" placeholder="Answers / Definitions"type="text"></textarea>
+                <input onChange={(e) => this.newEntryEntry(e)} id="entry1" type="text"></input>
+                <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" type="text"></textarea>
                 <textarea onChange={(e) => this.newEntryKeyword(e)} placeholder="Keywords" id="key1" type="text"></textarea>
                 <button onClick={this.saveNewEntry.bind(this)} id="saveButton" type="button">Save Entry</button>
                 <button onClick={this.deleteEntry.bind(this)} id="deleteButton" type="button">Delete Entry</button>
