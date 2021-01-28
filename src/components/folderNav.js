@@ -6,6 +6,7 @@ import Absorb from '../util/absorb';
 import pencil from '../images/pencil.png';
 import pencil1 from '../images/pencil1.png';
 import { Link, HashRouter as Router, Route, BrowserRouter } from 'react-router-dom';
+import e from 'cors';
 
 
 class FolderNav extends React.Component {
@@ -25,7 +26,9 @@ class FolderNav extends React.Component {
             test: "400"
           },
           refreshFolderItems: false,
-          category: "All"
+          category: "All",
+          fontWeight: "400",
+          keySet: -1
         };
 
         this.createFolderList = this.createFolderList.bind(this);
@@ -60,10 +63,6 @@ class FolderNav extends React.Component {
         if (this.state.newFolder != prevState.newFolder) {
           this.fetchPencil();
         }
-        
-        if (this.state.folders != prevState.folders) {
-          this.getFolders();
-        }
       }
 
       nameNewFolder(event) {
@@ -82,7 +81,8 @@ class FolderNav extends React.Component {
         Absorb.getFolders().then(folders => {
             this.setState({folders: folders.map(folder => folder.name)});
         });
-      }
+}
+      
 
       deleteFolder(folder) {
         this.setState({deleteFolder: folder});
@@ -136,10 +136,14 @@ class FolderNav extends React.Component {
       changeCat(e) {
         this.setState({category: e.target.value});
       }
+
+      boldify(){
+        return 700;
+      }
       
       createFolderList(){
         const folders = this.state.folders.map((folder) =>
-        <li className="folderNavItem" id={folder} style={{fontWeight: this.state.folders.selected}} onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}
+        <li className="folderNavItem" id={folder} style={{'fontWeight': this.state.loadedFolder === folder ? 'bold' : 'normal'}} onClick={this.loadFolder.bind(this, folder)} key={folder.id}>{folder}
          <button onClick={this.deleteFolder.bind(this, folder)} className="remove">⁠–</button></li>);
         return folders;
       }
@@ -151,6 +155,7 @@ class FolderNav extends React.Component {
         this.getFolders();
         document.getElementById("newFolder").value = null;
         this.setState({newFolder: null});
+        window.location.reload();
       }
 
       cancel() {
@@ -163,6 +168,10 @@ class FolderNav extends React.Component {
         } else {
           return pencil;
         }
+      }
+
+      keySet(e) {
+        this.setState({keySet: parseInt(e.target.value)})
       }
 
     
@@ -189,12 +198,15 @@ class FolderNav extends React.Component {
                       <option value="Mastered">Mastered</option>
                     </select>
                 </div>
+                <div id="keywordSetting">
+                  Keyword triggers: <input onChange={(e) => this.keySet(e)} id="newKeySet" placeholder="All"></input>
+                </div>
                 <div className="verify" style={{display: this.state.verify}}>
                   <h3 className="verifyQuestion">Are you sure you want to <span className="red">permanently delete</span> this folder: {this.state.deleteFolder}?</h3>
                   <button onClick={this.removeFolder.bind(this)} className="answer">Delete</button><button onClick={this.cancel.bind(this)} className="answer">Cancel</button>
                 </div>
-                <Route path="/test" render={props => <Test category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
-                <Route path="/manage" render={props => <Manage category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
+                <Route path="/test" render={props => <Test keySet={this.state.keySet} category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
+                <Route path="/manage" render={props => <Manage keySet={this.state.keySet} category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
             </div>
             </BrowserRouter>
         )

@@ -166,7 +166,6 @@ ul {
 
 #folderList {
     margin-top: 6px;
-    border-top: solid 2px rgb(199, 233, 255);
     border-bottom: solid 2px rgb(199, 233, 255);
     margin-left: 1vw;
     margin-right: 1vw;
@@ -206,5 +205,29 @@ ul {
     background-color: rgba(146, 211, 255, 0);
     border: none;
     margin-left: -0.1vw;
+
+}
+
+#keywordSetting {
+    margin-top: 2vh;
+    border-top: solid 2px rgb(199, 233, 255);
+    margin-left: 0.85vw;
+    margin-right: 1vw;
+    padding: 10px;
+    padding-top: 5px;
+    max-height: 60vh;
+    font-size: 0.9em;
+    overflow-y: scroll;
+}
+
+#newKeySet {
+    width: 12%;
+    margin-top: 15px;
+    background-color: rgb(199, 233, 255);
+    border: none;
+    padding: 5px;
+    border-radius: 3px;
+    outline: none;
+    margin-left: 15px;
 
 }

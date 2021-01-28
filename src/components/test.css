@@ -97,6 +97,43 @@
     outline: none;
 }
 
+#testScore {
+    border: none;
+    top: 4vh;
+    border-radius: 3px;
+    text-align: center;
+    border: solid 3px white;
+    background-color: white ;
+    top: 91.55vh;
+    left: 20%;
+    position: absolute;
+    padding: 0px 10px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#entScore {
+    border: none;
+    padding: 0px 10px;
+    top: 4vh;
+    border-radius: 3px;
+    text-align: center;
+    border: solid 3px white;
+    background-color: white;
+    top: 91.55vh;
+    left: 30%;
+    position: absolute;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    }
+
+    #entScore p, #testScore p {
+        margin: 0px;
+        font-size: 0.9em;
+    } 
+
 
 #nextButton:hover, #prevButton:hover, #checkButton:hover{
     background-color: rgb(182, 226, 255);
@@ -104,4 +141,13 @@
 
 #nextButton:active, #prevButton:active {
     transform: scale(0.95);
+}
+
+.complete {
+    width: 20vw;
+    padding: 20px 20px 10px 20px;
+}
+
+.endScore {
+    margin-top: -2vh;
 }

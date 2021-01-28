@@ -28,6 +28,7 @@ foldersRouter.use('/:folderName/folder-items', folderItemsRouter);
 foldersRouter.use('/:folderName/folder-items/:selected', folderItemsRouter);
 foldersRouter.use('/:folderName/folder-items/:id', folderItemsRouter);
 foldersRouter.use('/:folderName/folder-items/:low/:high', folderItemsRouter);
+foldersRouter.use('/:folderName/folder-items/', folderItemsRouter);
 
 
 

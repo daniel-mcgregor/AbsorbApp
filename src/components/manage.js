@@ -2,6 +2,7 @@ import React from 'react';
 import './manage.css';
 import FolderNav from '../components/folderNav';
 import { Link } from 'react-router-dom';
+import { uid } from "uid-safe";
 
 
 import Absorb from '../util/absorb';
@@ -46,12 +47,17 @@ class Manage extends React.Component {
             });
           }
         });
+
+        this.fetchFolderItems();
+        
     }
 
     componentDidUpdate(prevProps, prevState){
 
+
         if (this.props.category !== prevProps.category) {
             this.fetchFolderItems();
+            this.cancelEdit();
         }
 
         if (this.state.newEntryItems.id !== prevState.newEntryItems.id){
@@ -188,9 +194,10 @@ class Manage extends React.Component {
                 id: null
         }});
 
+        this.setState({selected: null});
         this.fetchFolderItems();
 
-
+        const string = uid.sync(18);
     }
 
     deleteEntry() {
@@ -207,6 +214,7 @@ class Manage extends React.Component {
             }
         });
 
+        this.setState({selected: null});
         this.cancelEdit();
     }
 
@@ -255,6 +263,7 @@ class Manage extends React.Component {
         this.setState({newEntryItems: newEntryItems});
         this.setState({editing: false});
         this.setState({focus: false})
+        this.setState({selected: null});
     
     };
 
@@ -262,6 +271,8 @@ class Manage extends React.Component {
 
     
     select(selected) {
+
+        this.setState({selected: selected});
 
         Absorb.getFolderItemsContent(this.props.loadedFolder, selected).then(folderItemContents => {
             if (folderItemContents){
@@ -306,7 +317,7 @@ class Manage extends React.Component {
         <table className="manageTable">
             <thead>
             <tr>
-            <th className="entryItem" style={{fontWeight: folderItem.selected}} onClick={(e) => this.select(folderItem.entry)}>{folderItem.entry}</th>
+            <th className="entryItem" style={{'fontWeight': this.state.selected === folderItem.entry ? 'bold' : 'normal'}} onClick={(e) => this.select(folderItem.entry)}>{folderItem.entry}</th>
             <th className="score" style={{fontWeight: folderItem.selected}}>{folderItem.score}</th>
             </tr>
             </thead>
@@ -325,13 +336,14 @@ class Manage extends React.Component {
         }
     }
 
+
     render(){
         return(
             <div id="manageDiv">
                 <form id="newEntryform">
                 <input onChange={(e) => this.newEntryEntry(e)} id="entry1" placeholder="New Entry" type="text"></input>
                 <textarea onChange={(e) => this.newEntryDefinition(e)} id="def1" placeholder="Answers / Definitions"type="text"></textarea>
-                <textarea onChange={(e) => this.newEntryKeyword(e)} placeholder="Keywords" id="key1" type="text"></textarea>
+                <textarea onChange={(e) => this.newEntryKeyword(e)} placeholder="Keywords (optional, seperated with commas)" id="key1" type="text"></textarea>
                 <button onClick={this.saveNewEntry.bind(this)} id="saveButton" type="button">Save Entry</button>
                 <button onClick={this.deleteEntry.bind(this)} id="deleteButton" type="button">Delete Entry</button>
                 <button onClick={this.cancelEdit.bind(this)} id="cancelButton" type="button">Cancel Edit</button>

@@ -137,6 +137,23 @@ Absorb.updateEntry = (folder, newEntryItems) => {
   });
 };
 
+Absorb.increaseScore = (folder, entry) => {
+  alert("going up again");
+  const folderName = encodeURIComponent(folder);
+  const url = `${baseUrl}/folders/${folderName}/folder-items/${entry}/plus`;
+  const fetchOptions = {
+    method: 'PUT'
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve(null));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.folderItems.map(folderItem => camelcaseKeys(folderItem));
+    });
+  });
+};
+
 
 Absorb.deleteEntry = (folder, id) => {
   const folderName = encodeURIComponent(folder);

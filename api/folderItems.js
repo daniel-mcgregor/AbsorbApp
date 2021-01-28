@@ -70,14 +70,15 @@ const db = new sqlite3.Database('./database.sqlite');
         }  
 
         const sql = "UPDATE Entries SET " + 
-        "entry = $entry, def1 = $def1, key1 = $key1 " +
+        "entry = $entry, def1 = $def1, key1 = $key1, score = $score " +
         "WHERE Entries.id = $id AND Entries.folder = $folder";
         const values = {
           $id: id,
           $def1: def1,
           $key1: key1,
           $folder: folder,
-          $entry: entry
+          $entry: entry,
+          $score: score
         };
 
         db.run(sql, values, function(error) {
