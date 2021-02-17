@@ -197,7 +197,6 @@ class Manage extends React.Component {
         this.setState({selected: null});
         this.fetchFolderItems();
 
-        const string = uid.sync(18);
     }
 
     deleteEntry() {
