@@ -2,7 +2,7 @@ import React from 'react';
 import './manage.css';
 import FolderNav from '../components/folderNav';
 import { Link } from 'react-router-dom';
-import { uid } from "uid-safe";
+
 
 
 import Absorb from '../util/absorb';
@@ -197,7 +197,7 @@ class Manage extends React.Component {
         this.setState({selected: null});
         this.fetchFolderItems();
 
-        const string = uid.sync(18);
+
     }
 
     deleteEntry() {

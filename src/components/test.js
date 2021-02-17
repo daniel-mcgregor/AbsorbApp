@@ -1,8 +1,5 @@
 import React from 'react';
 import './test.css';
-import FolderNav from '../components/folderNav';
-import { Link } from 'react-router-dom';
-
 
 import Absorb from '../util/absorb';
 
@@ -38,6 +35,14 @@ class Test extends React.Component {
 
         this.setupQuiz = this.setupQuiz.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.newQuizDef = this.newQuizDef.bind(this);
+        this.newQuizEntry = this.newQuizEntry.bind(this);
+        this.checkAnswer = this.checkAnswer.bind(this);
+        this.randomIntFromInterval = this.randomIntFromInterval.bind(this);
+        this.retrieve = this.retrieve.bind(this);
+        this.setupQuiz = this.setupQuiz.bind(this);
+        this.fetchFolderItems = this.fetchFolderItems.bind(this);
 
       }
 
@@ -149,6 +154,22 @@ class Test extends React.Component {
                 this.newQuizDef();
             }
           }
+
+        handleClick(event) {
+            
+            if (event.target.innerText === 'Random Entry') {
+                this.newQuizEntry();
+            }
+
+            if (event.target.innerText === 'Random Definition') {
+                this.newQuizDef();
+            }
+
+            if (event.target.innerText === 'Check Answer') {
+                this.checkAnswer();
+            }
+        }
+
 
         checkAnswer(){
 
@@ -269,18 +290,23 @@ class Test extends React.Component {
                 document.getElementById("answerBox").value = "";
                 this.setState({status: ""});
                 this.setState({ answered: [...this.state.answered, randInt] });
-                this.setState({computerInput: "entry"});
-                this.setState({correctDefColor: "3px solid rgba(157, 228, 140, 0)"});
-                this.setState({correctEntColor: "3px solid rgba(157, 228, 140, 0)"});
-                this.setState({answerColor: "3px solid rgba(157, 228, 140, 0)"});
-                this.setState({statusColor: "white"});
-                document.getElementById("defTest").focus();
-                this.retrieve(this.state.quiz.entries[this.state.answered[this.state.answered.length - 1]]);
-                this.setState({compareOpacity: 1});
-                this.setState({compareCursor: "all"});
-            } 
 
+                // delay needed to set the answered state.
+
+                setTimeout(() => {
+                    this.setState({computerInput: "entry"});
+                    this.setState({correctDefColor: "3px solid rgba(157, 228, 140, 0)"});
+                    this.setState({correctEntColor: "3px solid rgba(157, 228, 140, 0)"});
+                    this.setState({answerColor: "3px solid rgba(157, 228, 140, 0)"});
+                    this.setState({statusColor: "white"});
+                    document.getElementById("defTest").focus();
+                    this.retrieve(this.state.quiz.entries[this.state.answered[this.state.answered.length - 1]]);
+                    this.setState({compareOpacity: 1});
+                    this.setState({compareCursor: "all"});
+                  }, 100);
+            } 
         }
+
 
         newQuizDef(){
             if (this.state.answered.length != this.state.quiz.entries.length){
@@ -290,17 +316,23 @@ class Test extends React.Component {
                 document.getElementById("answerBox").value = "";
                 this.setState({status: ""});
                 this.setState({ answered: [...this.state.answered, randInt] });
-                this.setState({computerInput: "def"});
-                this.setState({correctDefColor: "3px solid rgba(157, 228, 140, 0)"});
-                this.setState({correctEntColor: "3px solid rgba(157, 228, 140, 0)"});
-                this.setState({answerColor: "3px solid rgba(157, 228, 140, 0)"});
-                this.setState({statusColor: "white"});
-                document.getElementById("entryTest").focus();
-                this.retrieve(this.state.quiz.entries[this.state.answered[this.state.answered.length - 1]]);
-                this.setState({compareOpacity: 1});
-                this.setState({compareCursor: "all"});
+
+                // delay needed to set the answered state.
+
+                setTimeout(() => {
+                    this.setState({computerInput: "def"});
+                    this.setState({correctDefColor: "3px solid rgba(157, 228, 140, 0)"});
+                    this.setState({correctEntColor: "3px solid rgba(157, 228, 140, 0)"});
+                    this.setState({answerColor: "3px solid rgba(157, 228, 140, 0)"});
+                    this.setState({statusColor: "white"});
+                    document.getElementById("entryTest").focus();
+                    this.retrieve(this.state.quiz.entries[this.state.answered[this.state.answered.length - 1]]);
+                    this.setState({compareOpacity: 1});
+                    this.setState({compareCursor: "all"});
+                }, 100);
             } 
         }
+
 
         randomIntFromInterval(min, max) { // min and max included 
 
@@ -410,9 +442,9 @@ class Test extends React.Component {
                 <input id="entryTest" style={{border: this.state.correctEntColor}} type="text" placeholder="Press the RIGHT arrow key to fetch a random entry. Press ENTER to check your answer."></input>
                 <textarea  id="defTest" style={{border: this.state.correctDefColor}}type="text" placeholder="Press the LEFT arrow key to fetch a random definition. Press ENTER to check your answer."></textarea>
                 <textarea  id="answerBox" style={{border: this.state.answerColor}} type="text" placeholder="Answers will display here."></textarea>
-                <button  id="nextButton" style ={{opacity: this.state.checkOpacity, pointerEvents: this.state.checkCursor}} type="button" onClick={this.newQuizEntry.bind(this)}>Random Entry</button>
-                <button  id="prevButton" style ={{opacity: this.state.checkOpacity, pointerEvents: this.state.checkCursor}} type="button" onClick={this.newQuizDef.bind(this)}>Random Definition</button>
-                <button  id="checkButton" style ={{opacity: this.state.compareOpacity, pointerEvents: this.state.compareCursor}}type="button" onClick={this.checkAnswer.bind(this)}>Check Answer</button>
+                <button  id="nextButton" style ={{opacity: this.state.checkOpacity, pointerEvents: this.state.checkCursor}} type="button" onClick={this.handleClick}>Random Entry</button>
+                <button  id="prevButton" style ={{opacity: this.state.checkOpacity, pointerEvents: this.state.checkCursor}} type="button" onClick={this.handleClick}>Random Definition</button>
+                <button  id="checkButton" style ={{opacity: this.state.compareOpacity, pointerEvents: this.state.compareCursor}}type="button" onClick={this.handleClick}>Check Answer</button>
                 <div id="entScore"><p>Entry Score: {this.state.newEntryItems.score}</p></div>
                 <div id="testScore"><p>Test Score: <span style={{color: this.state.testScore >= 75 ? "rgb(0, 204, 0)" : "red" }}>{Math.ceil(this.state.testScore)}%</span></p></div>
                 </form>

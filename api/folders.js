@@ -5,6 +5,16 @@ const foldersRouter = express.Router();
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('./database.sqlite');
 
+// var mysql = require('mysql');
+
+// var db2 = mysql.createConnection({
+//   host: "localhost",
+//   user: "dantheman",
+//   password: "withaplan",
+//   database: 'absorbdatabase',
+//   insecureAuth : true
+// });
+
 const folderItemsRouter = require('./folderItems.js');
 
 foldersRouter.param('folderName', (req, res, next, folderName) => {
@@ -33,6 +43,15 @@ foldersRouter.use('/:folderName/folder-items/', folderItemsRouter);
 
 
 foldersRouter.get('/', (req, res, next) => {
+
+    // db2.query('SELECT * FROM Folders', (error, folders) => {
+    //     if (error){
+    //         next(error);
+    //     }else{
+    //         res.status(200).json({folders: folders});
+    //     }
+    // })
+
     db.all('SELECT * FROM Folders', (error, folders) => {
         if (error){
             next(error);

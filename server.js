@@ -2,6 +2,20 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorhandler = require('errorhandler');
 const express = require('express');
+var mysql = require('mysql');
+
+var db = mysql.createConnection({
+  host: "localhost",
+  user: "dantheman",
+  password: "withaplan",
+  database: 'absorbdatabase',
+  insecureAuth : true
+});
+
+db.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 const apiRouter = require('./api/api');
 
