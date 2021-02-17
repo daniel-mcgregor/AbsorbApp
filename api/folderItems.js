@@ -70,16 +70,9 @@ var db = mysql.createConnection({
         const sql = "UPDATE Entries SET " + 
         "entry = ?, def1 = ?, key1 = ?, score = ? " +
         "WHERE id = ? AND folder = ?";
-        const values = [
-          entry,
-          def1,
-          key1,
-          score,
-          id,
-          folder
-        ];
+        const values = [entry, def1, key1, score, id, folder];
 
-        db.run(sql, values, function(error) {
+        db.query(sql, values, function(error) {
           if (error) {
             next(error);
           } else {

@@ -349,19 +349,23 @@ class Test extends React.Component {
         retrieve(selected) {
 
             this.setState({selected: selected});
+
+            console.log(selected);
     
             Absorb.getFolderItemsContent(this.props.loadedFolder, selected).then(folderItemContents => {
                 if (folderItemContents){
-                    const newEntryItems = JSON.parse(JSON.stringify(folderItemContents));                    
+                    const newEntryItems = JSON.parse(JSON.stringify(folderItemContents));  
+
+                    console.log(newEntryItems);                  
                     this.setState({newEntryItems:
                          {
                              
-                             entry: newEntryItems.folderItemContents.entry,
-                             def1: newEntryItems.folderItemContents.def1,
-                             key1: newEntryItems.folderItemContents.key1,
-                             folder: newEntryItems.folderItemContents.folder,
-                             score: newEntryItems.folderItemContents.score.toString(),
-                             id: newEntryItems.folderItemContents.id.toString()
+                             entry: newEntryItems.folderItemContents[0].entry,
+                             def1: newEntryItems.folderItemContents[0].def1,
+                             key1: newEntryItems.folderItemContents[0].key1,
+                             folder: newEntryItems.folderItemContents[0].folder,
+                             score: newEntryItems.folderItemContents[0].score.toString(),
+                             id: newEntryItems.folderItemContents[0].id.toString()
     
                         }
                         });
