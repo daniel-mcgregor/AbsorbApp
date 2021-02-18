@@ -3,7 +3,16 @@ const express = require('express');
 const foldersRouter = express.Router();
 
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database('./database.sqlite');
+
+var mysql = require('mysql');
+
+var db = mysql.createConnection({
+  host: "localhost",
+  user: "dantheman",
+  password: "withaplan",
+  database: 'absorbdatabase',
+  insecureAuth : true
+});
 
 // var mysql = require('mysql');
 
@@ -19,9 +28,9 @@ const folderItemsRouter = require('./folderItems.js');
 
 foldersRouter.param('folderName', (req, res, next, folderName) => {
     
-    const sql = "SELECT * FROM Folders WHERE Folders.name = $folderName";
-    const values = {$folderName: folderName};
-    db.get(sql, values, (error, folder) => {
+    const sql = "SELECT * FROM folders WHERE name = ?";
+    const values = [folderName];
+    db.query(sql, values, (error, folder) => {
         if(error) {
             next(error);
         }else if (folder) {
@@ -44,15 +53,7 @@ foldersRouter.use('/:folderName/folder-items/', folderItemsRouter);
 
 foldersRouter.get('/', (req, res, next) => {
 
-    // db2.query('SELECT * FROM Folders', (error, folders) => {
-    //     if (error){
-    //         next(error);
-    //     }else{
-    //         res.status(200).json({folders: folders});
-    //     }
-    // })
-
-    db.all('SELECT * FROM Folders', (error, folders) => {
+    db.query('SELECT * FROM folders', (error, folders) => {
         if (error){
             next(error);
         }else{
@@ -62,11 +63,11 @@ foldersRouter.get('/', (req, res, next) => {
 });
 
 foldersRouter.post('/', (req, res, next) => {
-    const sql = 'INSERT INTO Folders (name) VALUES ($name)';
-    const values = {
-        $name: req.body.folderName
-    };
-    db.all(sql, values, (error, folders) => {
+    const sql = 'INSERT INTO folders (name) VALUES (?)';
+    const values = [
+        req.body.folderName
+    ];
+    db.query(sql, values, (error, folders) => {
         if (error){
             next(error);
         }else{
@@ -77,19 +78,19 @@ foldersRouter.post('/', (req, res, next) => {
 
 foldersRouter.delete('/:folderName', (req, res, next) => {
 
-    const sql0 = 'DELETE FROM Entries WHERE Entries.folder = $name';
-    const values0 = {$name: req.params.folderName};
+    const sql0 = 'DELETE FROM Entries WHERE folder = ?';
+    const values0 = [req.params.folderName];
   
-    db.all(sql0, values0, (error) => {
+    db.query(sql0, [values0], (error) => {
         if (error){
             next(error);
         }
     });
 
-    const sql = 'DELETE FROM Folders WHERE Folders.name = $name';
-    const values = {$name: req.params.folderName};
+    const sql = 'DELETE FROM folders WHERE name = ?';
+    const values = [req.params.folderName];
   
-    db.all(sql, values, (error, folders) => {
+    db.query(sql, values, (error, folders) => {
         if (error){
             next(error);
         }else{

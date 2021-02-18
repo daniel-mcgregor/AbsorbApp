@@ -123,13 +123,7 @@ class FolderNav extends React.Component {
 
       loadFolder(folder){
         this.setState({loadedFolder: folder});
-
-        if (this.state.folderOpen == "closed"){
         this.setState({folderOpen: "open"});
-        } else {
-          this.setState({folderOpen: "closed"});
-        }
-  
 
       }
 
