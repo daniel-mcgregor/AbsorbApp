@@ -1,0 +1,89 @@
+[33mcommit a8d558710d09f1af2adf91d89d978381e0af78ae[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Wed Feb 17 14:28:32 2021 +0100
+
+    working
+
+[33mcommit d8655bb879b4680b167a99183a56d2056d0e24df[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Thu Jan 28 13:40:47 2021 +0100
+
+    heroku
+
+[33mcommit 50269b7a7cbc6bb78bd68484878937d0e0934198[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Mon Jan 25 19:22:39 2021 +0100
+
+    added quiz functionality
+
+[33mcommit a5ab9eec88ef9624b3c531eb4defac918ec3ff5b[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Fri Jan 22 14:17:51 2021 +0100
+
+    test page not working
+
+[33mcommit f1fa89f2b8e015c018624a422fcfe2191215af39[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Thu Jan 21 23:06:41 2021 +0100
+
+    test page next
+
+[33mcommit b746dbad95f8ade1d6c2e4635a3d5786b2389228[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Thu Jan 21 18:53:55 2021 +0100
+
+    now need to make test
+
+[33mcommit ba23ee036602ebdb6aadfa65e479494e0e7d0d37[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Wed Jan 20 22:02:10 2021 +0100
+
+    promise not resolving
+
+[33mcommit bc0759b4a84932a359dfb93270206e6bbf106616[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Tue Jan 19 15:35:39 2021 +0100
+
+    updated mysql
+
+[33mcommit bb83945a5cb771a780503501a6ad80d90b43427a[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Wed Nov 25 10:58:30 2020 +0100
+
+    uiupdated
+
+[33mcommit d35d8cd926e48cfe0dc5d57170ab584dc7b13022[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Wed Nov 18 18:26:27 2020 +0100
+
+    api working
+
+[33mcommit 4e9015d4d4aa3fbbf86d38795569898430c69751[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Wed Nov 18 16:52:01 2020 +0100
+
+    changes not working but not not working at least
+
+[33mcommit 15b4d69e6ece20680caafd66fea265a7578bace1[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Tue Nov 17 14:11:23 2020 +0100
+
+    working
+
+[33mcommit 24acbaf3d84de35a62591f7820a39fb4b620ff61[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Fri Nov 13 16:00:43 2020 +0100
+
+    changes
+
+[33mcommit 39bc0a576496a1f9e3e421d4c4e6c8a73b551deb[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Wed Nov 11 14:36:58 2020 +0100
+
+    all
+
+[33mcommit 018f7895dc97b09ce3851f781a4b5249f65059ae[m
+Author: Daniel Mcgregor <daniel.mcgregor@outlook.com>
+Date:   Fri Nov 6 15:07:32 2020 +0100
+
+    Initialize project using Create React App

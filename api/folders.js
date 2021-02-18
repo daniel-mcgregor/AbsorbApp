@@ -14,16 +14,6 @@ var db = mysql.createConnection({
   insecureAuth : true
 });
 
-// var mysql = require('mysql');
-
-// var db2 = mysql.createConnection({
-//   host: "localhost",
-//   user: "dantheman",
-//   password: "withaplan",
-//   database: 'absorbdatabase',
-//   insecureAuth : true
-// });
-
 const folderItemsRouter = require('./folderItems.js');
 
 foldersRouter.param('folderName', (req, res, next, folderName) => {
