@@ -117,6 +117,47 @@ Absorb.saveEntry = (folder, newEntryItems) => {
   });
 };
 
+Absorb.register = (newUser) => {
+
+  const url = `${baseUrl}/users`;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({newUser: newUser})
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve(null));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.user.map(folderItem => camelcaseKeys(folderItem));
+    });
+  });
+};
+
+Absorb.login = (user) => {
+
+  const url = `${baseUrl}/users/login`;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({user: user})
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve(null));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.user.map(folderItem => camelcaseKeys(folderItem));
+    });
+  });
+};
+
+
 Absorb.updateEntry = (folder, newEntryItems) => {
   const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items`;

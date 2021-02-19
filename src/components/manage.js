@@ -318,7 +318,7 @@ class Manage extends React.Component {
             <thead>
             <tr>
             <th className="entryItem" style={{'fontWeight': this.state.selected === folderItem.entry ? 'bold' : 'normal'}} onClick={(e) => this.select(folderItem.entry)}>{folderItem.entry}</th>
-            <th className="score" style={{fontWeight: folderItem.selected}}>{folderItem.score}</th>
+            <th className="score" style={{'fontWeight': this.state.selected === folderItem.entry ? 'bold' : 'normal'}}>{folderItem.score}</th>
             </tr>
             </thead>
         </table>

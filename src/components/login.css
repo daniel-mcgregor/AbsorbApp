@@ -1,0 +1,104 @@
+.authenticate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+#loginBox {
+    width: 25vw;
+    height: 60vh;
+    background-color: rgb(146, 211, 255);
+    border-radius: 3px;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+
+#loginDiv, #registerDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#registerDiv p {
+    margin: 15px 0px 0px 0px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8em;
+    padding: 3px 5px 5px 5px;
+    border-radius: 3px;
+    border: solid 2px white;
+}
+
+#loginDiv h3, #registerDiv h3 {
+    margin-bottom: 5px;
+    margin-top: 0px;
+    font-size: 2em;
+    color: white;
+    font-weight: 700;
+}
+
+#loginDiv h4, #registerDiv h4 {
+    margin-bottom: 15px;
+    color: white;
+    font-weight: 700;
+}
+
+#loginDiv input, #registerDiv input {
+    display: block;
+    margin: 10px;
+    width: 60%;
+}
+
+#username, #password, #email {
+    height: 3vh;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    outline: none;
+    text-align: center;
+}
+
+#buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#buttons input:active {
+    transform: scale(0.95);
+}
+
+#submit {
+    border: none;
+    border-radius: 3px;
+    background-color:rgba(199, 233, 255, 0);
+    height: 2vw;
+    outline: none;
+    cursor: pointer;
+    border: solid 2px white;
+    color: white;
+    /* opacity: 0.6;
+    pointer-events: none;
+    
+    outline: none; */
+}
+
+#switch {
+    border: none;
+    border-radius: 3px;
+    background-color:rgba(199, 233, 255, 0);
+    height: 2vw;
+    outline: none;
+    cursor: pointer;
+    color: white;
+}
+
+#submit:hover, #switch:hover {
+    text-decoration: underline;
+}

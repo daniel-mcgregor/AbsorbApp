@@ -224,8 +224,7 @@ class Test extends React.Component {
 
                         // TODO: fix key trigger setting function. Currently ignores value. 
 
-                        if (correct === this.state.quiz.keys[this.state.answered[this.state.answered.length - 1]].length) {
-                            alert(correct);
+                        if (correct === this.state.quiz.keys[this.state.answered[this.state.answered.length - 1]].length && correct !== 0) {
                             this.setState({correctDefColor: "3px solid rgb(0, 204, 0)"});
                             this.setState({status: "Correct!"});
                             this.plus();
@@ -235,6 +234,7 @@ class Test extends React.Component {
                                 return {correct: prevState.correct + 1}
                             });
                         } else if (correct >= this.props.keySet && this.props.keySet !== -1){
+                           
                             this.setState({correctDefColor: "3px solid rgb(0, 204, 0)"});
                             this.setState({status: "Correct!"});
                             this.plus();
@@ -246,6 +246,7 @@ class Test extends React.Component {
                         } else if (document.getElementById("defTest").value.toLowerCase() === this.state.quiz.defs[this.state.answered[this.state.answered.length - 1]].toLowerCase() ) {
                             this.setState({correctDefColor: "3px solid rgb(0, 204, 0)"});
                             this.setState({status: "Correct!"});
+                         
                             this.plus();
                             this.increaseScore();
                             this.setState({statusColor: "rgb(0, 204, 0)"});
@@ -255,6 +256,7 @@ class Test extends React.Component {
                         } else {
                             this.setState({correctDefColor: "3px solid red"});
                             this.setState({status: "Incorrect"});
+                
                             this.setState({statusColor: "red"});
                             this.minus();
                             this.increaseScore();
@@ -307,12 +309,15 @@ class Test extends React.Component {
             }
 
             this.state.folderItems.forEach(item => {
+
                 quiz.entries.push(item.entry);
                 quiz.defs.push(item.def1);
                 let newArray = [];
+                if (item.key1) {
                 item.key1.split(",").forEach(key => {
                     newArray.push(key.trim());
                 });
+            }
                 quiz.keys.push(newArray);
             });
 
