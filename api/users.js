@@ -4,6 +4,10 @@ const usersRouter = express.Router();
 
 var mysql = require('mysql');
 
+const bcrypt = require('bcryptjs');
+
+const saltRounds = 10;
+
 var db = mysql.createConnection({
   host: "localhost",
   user: "dantheman",
@@ -20,12 +24,14 @@ usersRouter.post('/', (req, res, next) => {
     const password = req.body.newUser.password;
 
     const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
-    const values = [
-        username,
-        email,
-        password
-    ];
-    db.query(sql, values, (error) => {
+
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+
+      if (err) {
+        console.log(err)
+      }
+
+      db.query(sql, [username, email, hash], (error) => {
         if (error){
             next(error);
         }else {
@@ -40,6 +46,8 @@ usersRouter.post('/', (req, res, next) => {
         });
       }
     });
+    });
+    
   });
 
 
@@ -48,19 +56,28 @@ usersRouter.post('/', (req, res, next) => {
     const username = req.body.user.username;
     const password = req.body.user.password;
 
-    const sql = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    const sql = 'SELECT * FROM users WHERE username = ?';
     const values = [
-        username,
-        password
+        username
     ];
+
+    
+
     db.query(sql, values, (error, user) => {
         if (error){
             next(error);
         }else {
-            res.status(200).json({user: user});
+            bcrypt.compare(password, user[0].password, (err, result) => {
+              if (result){
+                res.status(200).json({user: user});
+              } else {
+                res.json({message: "Wrong username/password."});
+              }
+            } )
             }
         });
   });
 
 
 module.exports = usersRouter;
+
