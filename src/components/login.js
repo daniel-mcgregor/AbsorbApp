@@ -126,7 +126,7 @@ class Login extends React.Component {
                 </div>
               </div>
             </div>
-            <Route path="/folderNav" render={props => <FolderNav loggedIn={this.state.loggedIn}/> } />
+            <Route path="/" render={props => <FolderNav loggedIn={this.state.loggedIn}/> } />
           </BrowserRouter>
         )
     }
