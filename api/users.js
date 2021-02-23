@@ -17,6 +17,7 @@ var db = mysql.createConnection({
 });
 
 
+
 usersRouter.post('/', (req, res, next) => {
 
     const username = req.body.newUser.username;
@@ -50,6 +51,14 @@ usersRouter.post('/', (req, res, next) => {
     
   });
 
+  usersRouter.get('/login', (req, res, next) => {
+    if (req.session.absorbUser) {
+      res.status(200).json({loggedIn: true, user: req.session.absorbUser});
+    } else {
+      res.status(400).json({loggedIn: false});
+    }
+  })
+
 
   usersRouter.post('/login', (req, res, next) => {
 
@@ -61,17 +70,18 @@ usersRouter.post('/', (req, res, next) => {
         username
     ];
 
-    
-
     db.query(sql, values, (error, user) => {
         if (error){
             next(error);
         }else {
             bcrypt.compare(password, user[0].password, (err, result) => {
               if (result){
+                req.session.absorbUser = user;
+                req.session.save();
+                console.log(req.session.absorbUser);
                 res.status(200).json({user: user});
               } else {
-                res.json({message: "Wrong username/password."});
+                res.status(400);
               }
             } )
             }

@@ -145,7 +145,8 @@ Absorb.login = (user) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({user: user})
+    body: JSON.stringify({user: user}),
+    credentials: 'include'
   };
   return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
@@ -156,6 +157,23 @@ Absorb.login = (user) => {
     });
   });
 };
+
+Absorb.return = () => {
+  const url = `${baseUrl}/users/login`;
+
+  const fetchOptions = {
+    credentials: 'include'
+  }
+
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve([]));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse.user;
+    });
+});
+}
 
 
 Absorb.updateEntry = (folder, newEntryItems) => {

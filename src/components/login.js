@@ -39,7 +39,15 @@ class Login extends React.Component {
       }
     
       componentDidMount() {
-      
+        Absorb.return().then((response) => {
+          Absorb.login(response[0]).then(user => {
+            if (user != ""){
+              console.log("Login Success");
+              console.log(JSON.parse(JSON.stringify(user)));
+              this.setState({loggedIn: "yes"});
+            }
+          });
+        });
       }
 
       componentDidUpdate(prevState) {

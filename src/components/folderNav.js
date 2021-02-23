@@ -37,6 +37,8 @@ class FolderNav extends React.Component {
       }
     
       componentDidMount() {
+
+      
         this.getFolders();
 
         let location = "";
@@ -59,6 +61,7 @@ class FolderNav extends React.Component {
       }
 
       componentDidUpdate(prevState) {
+
 
         if (this.state.newFolder != prevState.newFolder) {
           this.fetchPencil();
