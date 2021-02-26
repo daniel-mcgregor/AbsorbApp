@@ -170,7 +170,7 @@ Absorb.return = () => {
       return new Promise(resolve => resolve([]));
     }
     return response.json().then(jsonResponse => {
-      return jsonResponse.user;
+      return jsonResponse;
     });
 });
 }
