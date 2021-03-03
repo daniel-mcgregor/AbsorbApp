@@ -1,7 +1,8 @@
 
 const express = require('express');
 const folderItemsRouter = express.Router({mergeParams: true});
-
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 var mysql = require('mysql');
 
 var db = mysql.createConnection({
@@ -12,7 +13,23 @@ var db = mysql.createConnection({
   insecureAuth : true
 });
 
- folderItemsRouter.get('/', (req, res, next) => {
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    res.status(400);
+  } else {
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        res.status(400).json({auth: false, message: "authentication failed"});
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    });
+  }
+}
+
+ folderItemsRouter.get('/', verifyJWT, (req, res, next) => {
     const sql = "SELECT * FROM Entries WHERE folder = ?";
     const values = [req.params.folderName]
     db.query(sql, values, (error, folderItems) => {
@@ -24,7 +41,7 @@ var db = mysql.createConnection({
     });
   });
 
-  folderItemsRouter.get('/:low/:high', (req, res, next) => {
+  folderItemsRouter.get('/:low/:high', verifyJWT, (req, res, next) => {
     const sql = "SELECT * FROM Entries WHERE score >= ? AND score <= ? AND folder = ?";
     const values = [
       req.params.low,
@@ -41,7 +58,7 @@ var db = mysql.createConnection({
   });
 
 
-  folderItemsRouter.get('/:selected', (req, res, next) => {
+  folderItemsRouter.get('/:selected', verifyJWT, (req, res, next) => {
 
     const sql = "SELECT * FROM Entries WHERE folder = ? AND entry = ?";
     const values = [
@@ -58,7 +75,7 @@ var db = mysql.createConnection({
   });
 
 
-  folderItemsRouter.put('/', (req, res, next) => {
+  folderItemsRouter.put('/', verifyJWT, (req, res, next) => {
     
     const folder = req.body.newEntryItems.folder;
     const entry = req.body.newEntryItems.entry;
@@ -90,7 +107,7 @@ var db = mysql.createConnection({
       });
 
 
-  folderItemsRouter.post('/', (req, res, next) => {
+  folderItemsRouter.post('/', verifyJWT, (req, res, next) => {
     
     const folder = req.body.newEntryItems.folder;
     const entry = req.body.newEntryItems.entry;
@@ -121,7 +138,7 @@ var db = mysql.createConnection({
         });
       });
 
-  folderItemsRouter.delete('/:id', (req, res, next) => {
+  folderItemsRouter.delete('/:id', verifyJWT, (req, res, next) => {
     const sql = 'DELETE FROM Entries WHERE id = ?';
     const values = [req.params.id];
   

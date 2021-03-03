@@ -7,8 +7,14 @@ const baseUrl = 'http://localhost:4001/api';
 
 Absorb.getFolders = () => {
     const url = `${baseUrl}/folders`;
+    const fetchOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem("token")
+      }
+    }
   
-    return fetch(url).then(response => {
+    return fetch(url, fetchOptions).then(response => {
       if (!response.ok) {
         return new Promise(resolve => resolve([]));
       }
@@ -23,7 +29,8 @@ Absorb.createFolder = folderName => {
   const fetchOptions = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
     },
     body: JSON.stringify({folderName: folderName})
   };
@@ -41,7 +48,14 @@ Absorb.getFolderItemsByFolderName = folder => {
   const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items`;
 
-  return fetch(url).then(response => {
+  const fetchOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
+  }
+
+  return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
     }
@@ -54,7 +68,13 @@ Absorb.getFolderItemsByFolderName = folder => {
 Absorb.getFolderItemsByCategory = (folder, low, high) => {
   const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items/${low}/${high}`;
-  return fetch(url).then(response => {
+  const fetchOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
+  }
+  return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
     }
@@ -71,8 +91,14 @@ Absorb.getFolderItemsContent = (folder, selected) => {
   const select = encodeURIComponent(selected);
 
   const url = `${baseUrl}/folders/${folderName}/folder-items/${select}`;
+  const fetchOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
+  }
 
-  return fetch(url).then(response => {
+  return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
     }
@@ -83,8 +109,14 @@ Absorb.getFolderItemsContent = (folder, selected) => {
 Absorb.getAllFolderItems = () => {
 
   const url = `${baseUrl}/folders/folderItems`;
+  const fetchOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
+  }
 
-  return fetch(url).then(response => {
+  return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
       return new Promise(resolve => resolve([]));
     }
@@ -103,7 +135,9 @@ Absorb.saveEntry = (folder, newEntryItems) => {
   const fetchOptions = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+
     },
     body: JSON.stringify({newEntryItems: newEntryItems})
   };
@@ -152,9 +186,7 @@ Absorb.login = (user) => {
     if (!response.ok) {
       return new Promise(resolve => resolve(null));
     }
-    return response.json().then(jsonResponse => {
-      return jsonResponse.user.map(folderItem => camelcaseKeys(folderItem));
-    });
+    return response.json();
   });
 };
 
@@ -182,7 +214,8 @@ Absorb.updateEntry = (folder, newEntryItems) => {
   const fetchOptions = {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
     },
     body: JSON.stringify({newEntryItems: newEntryItems})
   };
@@ -201,7 +234,11 @@ Absorb.increaseScore = (folder, entry) => {
   const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items/${entry}/plus`;
   const fetchOptions = {
-    method: 'PUT'
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
   };
   return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
@@ -218,7 +255,12 @@ Absorb.deleteEntry = (folder, id) => {
   const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}/folder-items/${id}`;
   const fetchOptions = {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
+
   };
   return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
@@ -234,7 +276,11 @@ Absorb.deleteFolder = (folder) => {
   const folderName = encodeURIComponent(folder);
   const url = `${baseUrl}/folders/${folderName}`;
   const fetchOptions = {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    }
   };
   return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {

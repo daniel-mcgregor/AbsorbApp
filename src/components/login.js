@@ -26,7 +26,7 @@ class Login extends React.Component {
           registerVis: "none",
           loginVis: "flex",
           success: "none",
-          loggedIn: "no"
+          loggedIn: false
         };
 
         this.switch = this.switch.bind(this);
@@ -42,8 +42,8 @@ class Login extends React.Component {
         Absorb.return().then((response) => {
           console.log(response);
           if (response.loggedIn === true) {
-            console.log("true that");
-            this.setState({loggedIn: "yes"});
+            console.log("Welcome back!");
+            this.setState({loggedIn: true});
         }
         });
       }
@@ -93,11 +93,12 @@ class Login extends React.Component {
       }
 
       login() {
-        Absorb.login(this.state.user).then(user => {
-          if (user != ""){
-            console.log("Login Success");
-            console.log(JSON.parse(JSON.stringify(user)));
-            this.setState({loggedIn: "yes"});
+        Absorb.login(this.state.user).then(data => {
+          if (data["auth"] === true){
+            console.log("Login Success! Token: ");
+            console.log(JSON.parse(JSON.stringify(data["token"])));
+            localStorage.setItem("token", data["token"]);
+            this.setState({loggedIn: true});
           }
         });
       }
@@ -106,7 +107,7 @@ class Login extends React.Component {
     render(){
         return(
           <BrowserRouter basename="/" >
-            <div className="authenticate" style={{'display': this.state.loggedIn === "yes" ? 'none' : 'flex'}}>
+            <div className="authenticate" style={{'display': this.state.loggedIn === true ? 'none' : 'flex'}}>
               <div id="loginBox">
                 <div id="loginDiv" style={{display: this.state.loginVis}}>
                   <h3>Absorb</h3>

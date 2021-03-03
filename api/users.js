@@ -1,9 +1,9 @@
 
 const express = require('express');
 const usersRouter = express.Router();
-
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 var mysql = require('mysql');
-
 const bcrypt = require('bcryptjs');
 
 const saltRounds = 10;
@@ -15,6 +15,22 @@ var db = mysql.createConnection({
   database: 'absorbdatabase',
   insecureAuth : true
 });
+
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    res.status(400);
+  } else {
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        res.status(400).json({auth: false, message: "authentication failed"});
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    });
+  }
+}
 
 
 
@@ -78,8 +94,12 @@ usersRouter.post('/', (req, res, next) => {
               if (result){
                 req.session.absorbUser = user;
                 req.session.save();
+                const id = user[0].id;
+                const token = jwt.sign({id}, process.env.TOKEN_SECRET, {
+                  expiresIn: 300
+                });
                 console.log(req.session.absorbUser);
-                res.status(200).json({user: user});
+                res.status(200).json({auth: true, token: token, user: user});
               } else {
                 res.status(400);
               }

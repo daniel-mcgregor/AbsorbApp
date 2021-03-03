@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorhandler = require('errorhandler');
@@ -8,6 +10,9 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 const apiRouter = require('./api/api');
+
+const jwt = require('jsonwebtoken');
+
 
 const app = express();
 const PORT = process.env.PORT || 4001;

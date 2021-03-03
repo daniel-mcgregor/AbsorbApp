@@ -175,7 +175,7 @@ class FolderNav extends React.Component {
     render(){
         return(
           <BrowserRouter basename="/" >
-            <div className="folderNav" style={{'display': this.props.loggedIn === "yes" ? 'block' : 'none'}}>
+            <div className="folderNav" style={{'display': this.props.loggedIn === true ? 'block' : 'none'}}>
                 <Link style={{ textDecoration: 'none', color: "black" }} to="/"><h3 id="appTitle" onClick={this.currentPage.bind(this, "home")}>Absorb</h3></Link>
                 <ul id="topNav">
                 <Link style={{ textDecoration: 'none', color: "black" }} to="/manage"><li className="pageNavItem" onClick={this.currentPage.bind(this, "manage")} style={{fontWeight: this.state.currentPage.manage}}>Manage</li></Link>

@@ -1,7 +1,8 @@
 
 const express = require('express');
 const foldersRouter = express.Router();
-
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 const sqlite3 = require('sqlite3');
 
 var mysql = require('mysql');
@@ -15,6 +16,23 @@ var db = mysql.createConnection({
 });
 
 const folderItemsRouter = require('./folderItems.js');
+
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"];
+    if (!token) {
+      res.status(400);
+    } else {
+      jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          res.status(400).json({auth: false, message: "authentication failed", err: err});
+        } else {
+          req.userId = decoded.id;
+          next();
+        }
+      });
+    }
+  }
+
 
 foldersRouter.param('folderName', (req, res, next, folderName) => {
     
@@ -41,7 +59,7 @@ foldersRouter.use('/:folderName/folder-items/', folderItemsRouter);
 
 
 
-foldersRouter.get('/', (req, res, next) => {
+foldersRouter.get('/', verifyJWT, (req, res, next) => {
 
     db.query('SELECT * FROM folders', (error, folders) => {
         if (error){
@@ -52,7 +70,7 @@ foldersRouter.get('/', (req, res, next) => {
     });
 });
 
-foldersRouter.post('/', (req, res, next) => {
+foldersRouter.post('/', verifyJWT, (req, res, next) => {
     const sql = 'INSERT INTO folders (name) VALUES (?)';
     const values = [
         req.body.folderName
@@ -66,7 +84,7 @@ foldersRouter.post('/', (req, res, next) => {
     });
 });
 
-foldersRouter.delete('/:folderName', (req, res, next) => {
+foldersRouter.delete('/:folderName', verifyJWT, (req, res, next) => {
 
     const sql0 = 'DELETE FROM Entries WHERE folder = ?';
     const values0 = [req.params.folderName];
