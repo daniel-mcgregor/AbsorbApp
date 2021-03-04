@@ -63,11 +63,13 @@ class FolderNav extends React.Component {
 
       }
 
-      componentDidUpdate(prevState) {
-
-
+      componentDidUpdate(prevState, prevProps) {
         if (this.state.newFolder != prevState.newFolder) {
           this.fetchPencil();
+        }
+
+        if (this.props.user != prevProps.user) {
+          this.getFolders(sessionStorage.getItem("userId"));
         }
       }
 
@@ -178,6 +180,7 @@ class FolderNav extends React.Component {
         Absorb.logout().then(response => {
           console.log(response.message);
           document.cookie = "userId" + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=[/];"
+          window.location.reload();
         });
         }
 

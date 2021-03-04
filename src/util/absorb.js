@@ -205,7 +205,8 @@ Absorb.logout = () => {
     headers: {
       'Content-Type': 'application/json',
       'x-access-token': localStorage.getItem("token")
-    }
+    },
+    credentials: 'include'
   };
   return fetch(url, fetchOptions).then(response => {
     if (!response.ok) {
@@ -241,6 +242,10 @@ Absorb.return = () => {
   const url = `${baseUrl}/users/login`;
 
   const fetchOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem("token")
+    },
     credentials: 'include'
   }
 
