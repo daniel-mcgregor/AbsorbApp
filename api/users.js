@@ -75,6 +75,22 @@ usersRouter.post('/', (req, res, next) => {
     }
   })
 
+  usersRouter.post('/check', (req, res, next) => {
+    const email = req.body.email;
+    const sql = 'SELECT * FROM users WHERE email = ?';
+    const values = [
+      email
+    ]
+    
+    db.query(sql, values, (err, users) => {
+      if (err){
+        next(err);
+      } else {
+        console.log("checking database...");
+        res.status(200).json({users: users});
+      }
+    })
+  })
 
   usersRouter.post('/login', (req, res, next) => {
 

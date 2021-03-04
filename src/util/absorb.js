@@ -190,6 +190,28 @@ Absorb.login = (user) => {
   });
 };
 
+Absorb.checkEmail = (email) => {
+
+  const url = `${baseUrl}/users/check`;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({email: email})
+  };
+  return fetch(url, fetchOptions).then(response => {
+    if (!response.ok) {
+      return new Promise(resolve => resolve(null));
+    }
+    return response.json().then(jsonResponse => {
+      return jsonResponse;
+    });
+  });
+};
+
+
+
 Absorb.return = () => {
   const url = `${baseUrl}/users/login`;
 
@@ -206,6 +228,7 @@ Absorb.return = () => {
     });
 });
 }
+
 
 
 Absorb.updateEntry = (folder, newEntryItems) => {
@@ -271,6 +294,8 @@ Absorb.deleteEntry = (folder, id) => {
     });
   });
 };
+
+
 
 Absorb.deleteFolder = (folder) => {
   const folderName = encodeURIComponent(folder);
