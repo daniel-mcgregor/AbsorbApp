@@ -68,25 +68,6 @@ class Test extends React.Component {
             this.fetchFolderItems();
         }
 
-
-
-        if (this.props.folderOpen === this.state.folderOpen){
-
-            this.fetchFolderItems();
-            this.setState({checkOpacity: 1});
-            this.setState({checkCursor: "all"});
-            this.setupQuiz();
-
-        // the following if..else is used to prevent an infinite loop where the request for folder-items would continue indefintely.
-
-            if (this.state.folderOpen === "open") {
-                this.setState({folderOpen: "closed"});
-            } else {
-                this.setState({folderOpen: "open"});
-            }
-
-                }
-
         if (this.props.loadedFolder !== prevProps.loadedFolder) {
             this.closeWindow();
             this.fetchFolderItems();
@@ -104,7 +85,7 @@ class Test extends React.Component {
             let high;
             
             if (this.props.category === "All") {
-                Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
+                Absorb.getFolderItemsByFolderName(this.props.loadedFolder, sessionStorage.getItem("userId")).then(folderItems => {
                     const newEntryItems = {...this.state.newEntryItems};
                     newEntryItems.folder = this.props.loadedFolder;
                     this.setState({
@@ -129,7 +110,7 @@ class Test extends React.Component {
                 high = 99999;
             }
     
-            Absorb.getFolderItemsByCategory(this.props.loadedFolder, low, high).then(folderItems => {
+            Absorb.getFolderItemsByCategory(this.props.loadedFolder, low, high, sessionStorage.getItem("userId")).then(folderItems => {
                 const newEntryItems = {...this.state.newEntryItems};
                 newEntryItems.folder = this.props.loadedFolder;
                 this.setState({
@@ -405,7 +386,7 @@ class Test extends React.Component {
           }
 
           increaseScore(){
-            Absorb.updateEntry(this.props.loadedFolder, this.state.newEntryItems).then(folderItems => {
+            Absorb.updateEntry(this.props.loadedFolder, this.state.newEntryItems, sessionStorage.getItem("userId")).then(folderItems => {
                 if (folderItems){
                 const newEntryItems = {...this.state.newEntryItems};
                 newEntryItems.folder = this.props.loadedFolder;
@@ -438,7 +419,7 @@ class Test extends React.Component {
 
             this.setState({selected: selected});
     
-            Absorb.getFolderItemsContent(this.props.loadedFolder, selected).then(folderItemContents => {
+            Absorb.getFolderItemsContent(this.props.loadedFolder, selected, sessionStorage.getItem("userId")).then(folderItemContents => {
                 if (folderItemContents){
                     const newEntryItems = JSON.parse(JSON.stringify(folderItemContents));                    
                     this.setState({newEntryItems:

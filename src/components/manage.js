@@ -93,19 +93,9 @@ class Manage extends React.Component {
                 document.getElementById("cancelButton").style.pointerEvents = "none";
             }
         }
-  
 
-        if (this.props.folderOpen === this.state.folderOpen){
-
+        if (this.props.loadedFolder !== prevProps.loadedFolder) {
             this.fetchFolderItems();
-
-        // the following if..else is used to prevent an infinite loop where the request for folder-items would continue indefintely.
-
-            if (this.state.folderOpen === "open") {
-                this.setState({folderOpen: "closed"});
-            } else {
-                this.setState({folderOpen: "open"});
-            }
         }
 
     }
@@ -134,7 +124,7 @@ class Manage extends React.Component {
         let high;
         
         if (this.props.category === "All") {
-            Absorb.getFolderItemsByFolderName(this.props.loadedFolder).then(folderItems => {
+            Absorb.getFolderItemsByFolderName(this.props.loadedFolder, sessionStorage.getItem('userId')).then(folderItems => {
                 const newEntryItems = {...this.state.newEntryItems};
                 newEntryItems.folder = this.props.loadedFolder;
                 this.setState({
@@ -157,7 +147,7 @@ class Manage extends React.Component {
             high = 99999;
         }
 
-        Absorb.getFolderItemsByCategory(this.props.loadedFolder, low, high).then(folderItems => {
+        Absorb.getFolderItemsByCategory(this.props.loadedFolder, low, high, sessionStorage.getItem("userId")).then(folderItems => {
             const newEntryItems = {...this.state.newEntryItems};
             newEntryItems.folder = this.props.loadedFolder;
             this.setState({
@@ -201,7 +191,7 @@ class Manage extends React.Component {
 
     deleteEntry() {
 
-        Absorb.deleteEntry(this.props.loadedFolder, this.state.newEntryItems.id).then(folderItems => {
+        Absorb.deleteEntry(this.props.loadedFolder, this.state.newEntryItems.id, sessionStorage.getItem("userId")).then(folderItems => {
             if (folderItems){
             const newEntryItems = {...this.state.newEntryItems};
             newEntryItems.folder = this.props.loadedFolder;
@@ -228,7 +218,7 @@ class Manage extends React.Component {
         });
 
         if (exists === false && this.state.editing === false) {
-                Absorb.saveEntry(this.props.loadedFolder, this.state.newEntryItems).then(folderItems => {
+                Absorb.saveEntry(this.props.loadedFolder, this.state.newEntryItems, sessionStorage.getItem("userId")).then(folderItems => {
                     if (folderItems){
                     const newEntryItems = {...this.state.newEntryItems};
                     newEntryItems.folder = this.props.loadedFolder;
@@ -238,7 +228,7 @@ class Manage extends React.Component {
                         savedFolderItems: JSON.parse(JSON.stringify(folderItems))
                     });
             }})} else {
-                Absorb.updateEntry(this.props.loadedFolder, this.state.newEntryItems).then(folderItems => {
+                Absorb.updateEntry(this.props.loadedFolder, this.state.newEntryItems, sessionStorage.getItem("userId")).then(folderItems => {
                     if (folderItems){
                     const newEntryItems = {...this.state.newEntryItems};
                     newEntryItems.folder = this.props.loadedFolder;
@@ -273,7 +263,7 @@ class Manage extends React.Component {
 
         this.setState({selected: selected});
 
-        Absorb.getFolderItemsContent(this.props.loadedFolder, selected).then(folderItemContents => {
+        Absorb.getFolderItemsContent(this.props.loadedFolder, selected, sessionStorage.getItem("userId")).then(folderItemContents => {
             if (folderItemContents){
                 const newEntryItems = JSON.parse(JSON.stringify(folderItemContents));
 

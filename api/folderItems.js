@@ -29,9 +29,9 @@ const verifyJWT = (req, res, next) => {
   }
 }
 
- folderItemsRouter.get('/', verifyJWT, (req, res, next) => {
-    const sql = "SELECT * FROM Entries WHERE folder = ?";
-    const values = [req.params.folderName]
+ folderItemsRouter.post('/returnFolderItems', verifyJWT, (req, res, next) => {
+    const sql = "SELECT * FROM Entries WHERE folder = ? AND userId = ?";
+    const values = [req.params.folderName, req.body.userId]
     db.query(sql, values, (error, folderItems) => {
       if (error) {
         next(error);
@@ -41,12 +41,13 @@ const verifyJWT = (req, res, next) => {
     });
   });
 
-  folderItemsRouter.get('/:low/:high', verifyJWT, (req, res, next) => {
-    const sql = "SELECT * FROM Entries WHERE score >= ? AND score <= ? AND folder = ?";
+  folderItemsRouter.post('/:low/:high', verifyJWT, (req, res, next) => {
+    const sql = "SELECT * FROM Entries WHERE score >= ? AND score <= ? AND folder = ? AND userId = ?";
     const values = [
       req.params.low,
       req.params.high,
-      req.params.folderName
+      req.params.folderName,
+      req.body.userId
     ];
     db.query(sql, values, (error, folderItems) => {
       if (error) {
@@ -58,12 +59,13 @@ const verifyJWT = (req, res, next) => {
   });
 
 
-  folderItemsRouter.get('/:selected', verifyJWT, (req, res, next) => {
+  folderItemsRouter.post('/:selected', verifyJWT, (req, res, next) => {
 
-    const sql = "SELECT * FROM Entries WHERE folder = ? AND entry = ?";
+    const sql = "SELECT * FROM Entries WHERE folder = ? AND entry = ? AND userId = ?";
     const values = [
       req.params.folderName,
-      req.params.selected
+      req.params.selected,
+      req.body.userId
     ];
     db.query(sql, values, (error, folderItemContents) => {
       if (error) {
@@ -83,18 +85,19 @@ const verifyJWT = (req, res, next) => {
     const def1 = req.body.newEntryItems.def1;
     const key1 = req.body.newEntryItems.key1;
     const id = req.body.newEntryItems.id;
+    const userId = req.body.userId;
 
         const sql = "UPDATE Entries SET " + 
         "entry = ?, def1 = ?, key1 = ?, score = ? " +
-        "WHERE id = ? AND folder = ?";
-        const values = [entry, def1, key1, score, id, folder];
+        "WHERE id = ? AND folder = ? AND userId = ?";
+        const values = [entry, def1, key1, score, id, folder, userId];
 
         db.query(sql, values, function(error) {
           if (error) {
             next(error);
           } else {
-            const sql2 = "SELECT * FROM Entries WHERE folder = ?";
-            const values2 = [folder];
+            const sql2 = "SELECT * FROM Entries WHERE folder = ? AND userId = ?";
+            const values2 = [folder, userId];
             db.query(sql2, values2, (error, folderItems) => {
               if (error) {
                 next(error);
@@ -114,19 +117,20 @@ const verifyJWT = (req, res, next) => {
     const score = 0;
     const defs = req.body.newEntryItems.def1;
     const keys = req.body.newEntryItems.key1;
+    const userId = req.body.userId
 
   
-        const sql = 'INSERT INTO Entries (folder, entry, score, def1, key1)' +
-            'VALUES (?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO Entries (folder, entry, score, def1, key1, userId)' +
+            'VALUES (?, ?, ?, ?, ?, ?)';
 
-        const values = [folder, entry, score, defs, keys];
+        const values = [folder, entry, score, defs, keys, userId];
 
         db.query(sql, values, function(error) {
           if (error) {
             next(error);
           } else {
-            const sql2 = "SELECT * FROM Entries WHERE folder = ?";
-            const values2 = [folder];
+            const sql2 = "SELECT * FROM Entries WHERE folder = ? AND userId = ?";
+            const values2 = [folder, userId];
             db.query(sql2, values2, (error, folderItems) => {
               if (error) {
                 next(error);
@@ -139,15 +143,15 @@ const verifyJWT = (req, res, next) => {
       });
 
   folderItemsRouter.delete('/:id', verifyJWT, (req, res, next) => {
-    const sql = 'DELETE FROM Entries WHERE id = ?';
-    const values = [req.params.id];
+    const sql = 'DELETE FROM Entries WHERE id = ? AND userId = ?';
+    const values = [req.params.id, req.body.userId];
   
     db.query(sql, values, function(error) {
           if (error) {
             next(error);
           } else {
-            const sql2 = "SELECT * FROM Entries WHERE folder = ?";
-            const values2 = [req.params.folderName];
+            const sql2 = "SELECT * FROM Entries WHERE folder = ? AND userId = ?";
+            const values2 = [req.params.folderName, req.body.userId];
             db.query(sql2, values2, (error, folderItems) => {
               if (error) {
                 next(error);

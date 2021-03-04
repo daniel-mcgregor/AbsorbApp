@@ -21,14 +21,15 @@ class Login extends React.Component {
           user: {
             username: "",
             email: "",
-            password: ""
+            password: "",
+            id: -1
           },
 
           registerVis: "none",
           loginVis: "flex",
           success: "none",
           loggedIn: false,
-          regMessage: "Account created successfully!"
+          regMessage: "Account created successfully!",
         };
 
         this.switch = this.switch.bind(this);
@@ -46,6 +47,8 @@ class Login extends React.Component {
           if (response.loggedIn === true) {
             console.log("Welcome back!");
             this.setState({loggedIn: true});
+            this.setId(JSON.parse(JSON.stringify(response["user"][0].id)));
+            sessionStorage.setItem("userId", JSON.stringify(response["user"][0].id));
         }
         });
       }
@@ -69,6 +72,12 @@ class Login extends React.Component {
       setEmail(event) {
         const user = JSON.parse(JSON.stringify(this.state.user));
         user.email = event.target.value;
+        this.setState({user: user});
+      }
+
+      setId(id) {
+        const user = JSON.parse(JSON.stringify(this.state.user));
+        user.id = id;
         this.setState({user: user});
       }
 
@@ -106,9 +115,9 @@ class Login extends React.Component {
                 if (user){
                   this.setState({regMessage: "Account created successfully!"});
                   this.setState({success: "block"});
-                  // setTimeout(() => {
-                  //   window.location.reload();
-                  // }, 3000);
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 3000);
                 }
               });
             } else {
@@ -133,7 +142,10 @@ class Login extends React.Component {
             console.log("Login Success! Token: ");
             console.log(JSON.parse(JSON.stringify(data["token"])));
             localStorage.setItem("token", data["token"]);
+            console.log(JSON.parse(JSON.stringify(data)));
             this.setState({loggedIn: true});
+            this.setId(JSON.parse(JSON.stringify(data["user"][0].id)));
+            sessionStorage.setItem("userId", JSON.stringify(data["user"][0].id));
           }
         });
       }
@@ -168,7 +180,7 @@ class Login extends React.Component {
                 </div>
               </div>
             </div>
-            <Route path="/" render={props => <FolderNav loggedIn={this.state.loggedIn}/> } />
+            <Route path="/" render={props => <FolderNav loggedIn={this.state.loggedIn} user={this.state.user}/> } />
           </BrowserRouter>
         )
     }

@@ -59,9 +59,14 @@ foldersRouter.use('/:folderName/folder-items/', folderItemsRouter);
 
 
 
-foldersRouter.get('/', verifyJWT, (req, res, next) => {
+foldersRouter.post('/', verifyJWT, (req, res, next) => {
 
-    db.query('SELECT * FROM folders', (error, folders) => {
+    const userId = req.body.userId;
+    const values = [
+        userId
+    ];
+
+    db.query('SELECT * FROM folders WHERE userId = ?', values, (error, folders) => {
         if (error){
             next(error);
         }else{
@@ -70,10 +75,11 @@ foldersRouter.get('/', verifyJWT, (req, res, next) => {
     });
 });
 
-foldersRouter.post('/', verifyJWT, (req, res, next) => {
-    const sql = 'INSERT INTO folders (name) VALUES (?)';
+foldersRouter.post('/newFolder', verifyJWT, (req, res, next) => {
+    const sql = 'INSERT INTO folders (name, userId) VALUES (?, ?)';
     const values = [
-        req.body.folderName
+        req.body.folderName,
+        req.body.userId
     ];
     db.query(sql, values, (error, folders) => {
         if (error){
@@ -84,19 +90,19 @@ foldersRouter.post('/', verifyJWT, (req, res, next) => {
     });
 });
 
-foldersRouter.delete('/:folderName', verifyJWT, (req, res, next) => {
+foldersRouter.delete('/:folderName/:userId', verifyJWT, (req, res, next) => {
 
-    const sql0 = 'DELETE FROM Entries WHERE folder = ?';
-    const values0 = [req.params.folderName];
+    const sql0 = 'DELETE FROM Entries WHERE folder = ? AND userId = ?';
+    const values0 = [req.params.folderName, req.params.userId];
   
-    db.query(sql0, [values0], (error) => {
+    db.query(sql0, values0, (error) => {
         if (error){
             next(error);
         }
     });
 
-    const sql = 'DELETE FROM folders WHERE name = ?';
-    const values = [req.params.folderName];
+    const sql = 'DELETE FROM folders WHERE name = ? AND userId = ?';
+    const values = [req.params.folderName, req.params.userId];
   
     db.query(sql, values, (error, folders) => {
         if (error){

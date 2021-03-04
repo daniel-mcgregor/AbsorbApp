@@ -124,6 +124,16 @@ usersRouter.post('/', (req, res, next) => {
         });
   });
 
+  usersRouter.delete('/logout', (req, res, next) => {
+      req.session.destroy(function (err) {
+             if (err) {
+               res.status(500).json({message: "unable to delete session"});
+             } else {
+              res.clearCookie('userId', {domain: "localhost:3000", path: "/"}).status(200).json({message: "session deleted"});
+             }
+         });
+  })
+
 
 module.exports = usersRouter;
 

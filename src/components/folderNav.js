@@ -5,8 +5,10 @@ import Test from '../components/test';
 import Absorb from '../util/absorb';
 import pencil from '../images/pencil.png';
 import pencil1 from '../images/pencil1.png';
+import logout from '../images/logout.png';
 import { Link, HashRouter as Router, Route, BrowserRouter } from 'react-router-dom';
 import e from 'cors';
+import session from 'express-session';
 
 
 class FolderNav extends React.Component {
@@ -34,12 +36,13 @@ class FolderNav extends React.Component {
         this.createFolderList = this.createFolderList.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.loadFolder = this.loadFolder.bind(this);
+        this.logout = this.logout.bind(this);
       }
     
       componentDidMount() {
 
       
-        this.getFolders();
+        this.getFolders(sessionStorage.getItem("userId"));
 
         let location = "";
         location += window.location;
@@ -81,7 +84,7 @@ class FolderNav extends React.Component {
 
 
       getFolders() {
-        Absorb.getFolders().then(folders => {
+        Absorb.getFolders(sessionStorage.getItem("userId")).then(folders => {
             this.setState({folders: folders.map(folder => folder.name)});
         });
 }
@@ -93,11 +96,11 @@ class FolderNav extends React.Component {
       }
 
       removeFolder() {
-        Absorb.deleteFolder(this.state.deleteFolder).then(folders => {
+        Absorb.deleteFolder(this.state.deleteFolder, sessionStorage.getItem("userId")).then(folders => {
             this.setState({folders: folders.map(folder => folder.name)});
         });
         this.setState({verify: "none"});
-        this.getFolders();
+        this.getFolders(sessionStorage.getItem("userId"));
         
         if (this.state.loadedFolder == this.state.deleteFolder) {
           window.location.reload();
@@ -146,10 +149,10 @@ class FolderNav extends React.Component {
       }
 
       createFolder() {
-        Absorb.createFolder(this.state.newFolder.trim()).then(folders => {
+        Absorb.createFolder(this.state.newFolder.trim(), sessionStorage.getItem("userId")).then(folders => {
             this.setState({folders: folders.map(folder => folder.name)});
         });
-        this.getFolders();
+        this.getFolders(sessionStorage.getItem("userId"));
         document.getElementById("newFolder").value = null;
         this.setState({newFolder: null});
         window.location.reload();
@@ -170,6 +173,13 @@ class FolderNav extends React.Component {
       keySet(e) {
         this.setState({keySet: parseInt(e.target.value)})
       }
+
+      logout() {
+        Absorb.logout().then(response => {
+          console.log(response.message);
+          document.cookie = "userId" + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=[/];"
+        });
+        }
 
     
     render(){
@@ -198,12 +208,18 @@ class FolderNav extends React.Component {
                 <div id="keywordSetting">
                   Keyword triggers: <input onChange={(e) => this.keySet(e)} id="newKeySet" placeholder="All"></input>
                 </div>
+                <div id="logout">
+                  <div id="logoutSub">
+                    <img id="logoutLogo" src={logout}/>
+                    <p id="username" onClick={this.logout}>Logout</p>
+                  </div>
+                </div>
                 <div className="verify" style={{display: this.state.verify}}>
                   <h3 className="verifyQuestion">Are you sure you want to <span className="red">permanently delete</span> this folder: {this.state.deleteFolder}?</h3>
                   <button onClick={this.removeFolder.bind(this)} className="answer">Delete</button><button onClick={this.cancel.bind(this)} className="answer">Cancel</button>
                 </div>
-                <Route path="/test" render={props => <Test keySet={this.state.keySet} category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
-                <Route path="/manage" render={props => <Manage keySet={this.state.keySet} category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen}/> } />
+                <Route path="/test" render={props => <Test keySet={this.state.keySet} category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen} user={this.props.user}/> } />
+                <Route path="/manage" render={props => <Manage keySet={this.state.keySet} category={this.state.category} refreshFolderItems={this.state.refreshFolderItems} loadedFolder={this.state.loadedFolder} folderOpen={this.state.folderOpen} user={this.props.user}/> } />
             </div>
             </BrowserRouter>
         )

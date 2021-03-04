@@ -21,6 +21,38 @@
     text-align: left;
 }
 
+#logoutLogo {
+    width: 20px;
+    height: auto;
+    display: inline-block;
+}
+
+#logoutSub {
+    margin-left: 8%;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+#username {
+    display: inline;
+}
+
+#logout {
+    
+    position: absolute;
+    height: 10vh;
+    width: 15%;
+    border-top: solid 2px rgb(199, 233, 255);
+    display: block;
+    bottom: 0px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
 .folderNavItem:hover{
     cursor: pointer;
     text-decoration: underline;
