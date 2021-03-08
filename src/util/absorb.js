@@ -3,7 +3,7 @@ import camelcaseKeys from './camelcase-keys/index';
 import 'whatwg-fetch';
 
 const Absorb = {};
-const baseUrl = 'http://localhost:4001/api';
+const baseUrl = 'https://absorb.herokuapp.com/api';
 
 Absorb.getFolders = (userId) => {
     const url = `${baseUrl}/folders`;

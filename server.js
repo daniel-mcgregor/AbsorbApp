@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 4001;
 
 app.use(cors({
-  origin: ["http://localhost:3000"],
+  origin: ["https://absorb.herokuapp.com"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
