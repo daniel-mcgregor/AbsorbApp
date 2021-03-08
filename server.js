@@ -8,7 +8,6 @@ var mysql = require('mysql');
 
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-
 const apiRouter = require('./api/api');
 
 const jwt = require('jsonwebtoken');
@@ -46,12 +45,13 @@ app.use(function(req, res, next) {
 
 
 var db = mysql.createConnection({
-  host: "localhost",
-  user: "dantheman",
-  password: "withaplan",
-  database: 'absorbdatabase',
+  host: "eu-cdbr-west-03.cleardb.net",
+  user: "b8edfe2bdc69ec",
+  password: "9a66db9e",
+  database: 'heroku_572f1c341b69525',
   insecureAuth : true
 });
+
 
 db.connect(function(err) {
   if (err) throw err;

@@ -9,10 +9,10 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 var db = mysql.createConnection({
-  host: "localhost",
-  user: "dantheman",
-  password: "withaplan",
-  database: 'absorbdatabase',
+  host: "eu-cdbr-west-03.cleardb.net",
+  user: "b8edfe2bdc69ec",
+  password: "9a66db9e",
+  database: 'heroku_572f1c341b69525',
   insecureAuth : true
 });
 
