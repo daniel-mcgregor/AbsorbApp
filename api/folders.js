@@ -8,12 +8,12 @@ const sqlite3 = require('sqlite3');
 var mysql = require('mysql');
 
 var db = mysql.createConnection({
-  host: "localhost",
-  user: "dantheman",
-  password: "withaplan",
-  database: 'absorbdatabase',
-  insecureAuth : true
-});
+    host: "localhost",
+    user: "dantheman",
+    password: "withaplan",
+    database: 'absorbdatabase',
+    insecureAuth : true
+  });
 
 const folderItemsRouter = require('./folderItems.js');
 

@@ -12,7 +12,6 @@ var db = mysql.createConnection({
   database: 'absorbdatabase',
   insecureAuth : true
 });
-
 const verifyJWT = (req, res, next) => {
   const token = req.headers["x-access-token"];
   if (!token) {
